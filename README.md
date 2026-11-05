@@ -12,7 +12,7 @@
 [![GitHub Repository](https://img.shields.io/badge/GitHub-College__Setu-181717.svg?logo=github)](https://github.com/Praveen-Suthar-08/College_Setu.git)
 
 **Repository Link:**  
-🔗 **[https://github.com/Praveen-Suthar-08/College_Setu.git](https://github.com/Praveen-Suthar-08/College_Setu.git)**
+🔗 **(https://github.com/Praveen-Suthar-08/College_Setu_ERP-Portal.git)**
 
 <p align="center">
   <em>"Education is the sacred bridge between aspiration and achievement. College Setu provides the resilient digital infrastructure that unifies students, faculty, parents, and administrative leadership in pursuit of academic excellence."</em>
@@ -325,7 +325,7 @@ Follow these simple steps to clone, configure, and launch College Setu on your l
 
 ### 1. Clone the Repository
 ```bash
-git clone https://github.com/Praveen-Suthar-08/College_Setu.git
+git clone [https://github.com/Praveen-Suthar-08/College_Setu.git](https://github.com/Praveen-Suthar-08/College_Setu_ERP-Portal.git)
 cd College_Setu
 ```
 
