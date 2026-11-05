@@ -1,0 +1,3 @@
+User-agent: *
+Allow: /
+Sitemap: https://campus-portal.example.edu.in/sitemap.xml

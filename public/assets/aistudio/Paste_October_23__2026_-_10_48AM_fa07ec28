@@ -1,0 +1,713 @@
+College Portal: Master PRD and Build Prompts
+For Google AI Studio (Build mode), free tech stack, role-based, security-first
+1. How to use this document
+Sections 2 to 9 are the Master PRD. It is the single source of truth for what you are building. Sections 10 to 13 contain the prompts you paste into Google AI Studio, in order, along with the Vibe Coding Checklist applied to this project.
+The rule that keeps the build clean: never paste everything at once. Paste the PRD summary once (Prompt 0), ask for a plan (Prompt 1), review the plan, and only then build one module per prompt. Each prompt is small enough that you can review the result before moving on.
+2. Product overview
+Product name: Campus Portal (rename freely)
+One-line vision: One secure place where students, parents, faculty, and the college office handle attendance, results, fees, notices, mentoring, and leave, with every person seeing only what their role allows.
+Problems it solves
+• Attendance is kept on paper or scattered spreadsheets, and students find out about shortages too late.
+• Fee dues, receipts, and deadlines are communicated by word of mouth or noticeboards.
+• Leave requests move through physical letters with no status tracking.
+• Students do not know who their mentor is, what their subjects are, or who teaches them.
+• Parents have no reliable view of attendance, marks, and dues.
+Goals
+• Every role has a purpose-built dashboard with the three or four things that role needs daily.
+• Attendance, fees, and leave each follow a clear workflow with status and history.
+• Notices reach exactly the right audience (college, department, class, or individual).
+• Data is protected by row-level access rules, not just hidden buttons.
+• The interface looks like a considered, editorial product rather than a generated template.
+Non-goals for version 1
+• Live payment collection with real money (use test mode or manual payment recording first).
+• Native mobile apps (build a responsive web app that can be installed as a PWA).
+• Online exams and video classes.
+Success metrics
+• A faculty member can mark attendance for a class of 60 in under 60 seconds.
+• A student can apply for leave in under 45 seconds and see the approval status without asking anyone.
+• Zero cross-role data leaks in the security test (Section 12).
+• Lighthouse scores of 90 or above for performance, accessibility, and best practices on the landing page.
+3. Roles and permissions
+The app has eight roles. A role is stored on the user's profile in the database and enforced by row-level security. It is never chosen by the user at sign-up.
+Role
+Who they are
+Can do
+Cannot do
+Super Admin
+Principal's office or IT owner
+Everything, including creating admins, viewing audit logs, system settings
+Nothing is blocked, but every action is logged
+Admin (Office)
+Academic office staff
+Manage departments, courses, subjects, batches, users (except Super Admin), timetable, notices, bulk imports
+Edit fee payments, change audit logs
+Accounts Officer
+Fee and finance staff
+Define fee structures, assign fees, record payments, issue receipts, send due reminders, export fee reports
+See marks, edit attendance, manage users
+HOD
+Head of department
+View department attendance and results, approve or reject leave escalated to them, post department notices, assign mentors
+Edit other departments, touch fees
+Faculty
+Teachers
+Mark attendance for assigned subjects, enter internal marks, post class notices, act as mentor, approve mentee leave, see their timetable
+See other faculty's classes, see fee data
+Student
+Enrolled students
+View own profile, attendance, marks, fees, timetable, notices, mentor; apply for leave; download receipts and report card
+See any other student's data
+Parent or Guardian
+Linked to one or more students
+View linked child's attendance, marks, fee dues, notices, leave status; read-only
+Apply for leave on the child's behalf, edit anything
+Librarian (phase 2)
+Library staff
+Manage book catalogue, issue and return, fines
+Everything outside the library
+Account creation rules
+• Students sign up with their college email and enrolment number, then wait in a Pending state until the office verifies them (or they are bulk-imported and receive an invite email).
+• Faculty, HOD, Accounts, Admin, and Librarian accounts are created by invitation only.
+• Parents are invited by the office or linked by a student-generated, single-use link code that the office approves.
+• Only a Super Admin can create or demote an Admin.
+4. Free tech stack
+Everything below has a usable free tier. Free tier limits change, so check each provider's pricing page before launch.
+Layer
+Choice
+Why
+Build environment
+Google AI Studio, Build mode
+Generates and previews a React and Vite app, with version history
+Frontend
+React 18, Vite, TypeScript
+Type safety catches many AI-generated mistakes early
+Styling
+Tailwind CSS with CSS variables for design tokens
+Consistent theming, easy dark mode
+Components
+Radix UI primitives (via shadcn/ui patterns)
+Accessible dialogs, menus, tabs, tooltips
+Animation
+Framer Motion, plus CSS scroll-driven effects where supported
+Scroll reveals, layout transitions, hover physics
+Icons
+Lucide React (consistent stroke icons, no emojis)
+Clean, uniform line icons
+Charts
+Recharts
+Attendance and performance charts
+Forms and validation
+React Hook Form and Zod
+One schema validates both client and server input
+Routing
+React Router
+Role-based protected routes
+Data fetching
+TanStack Query
+Caching, loading and error states
+Backend, database, auth
+Supabase (free tier): Postgres, Auth, Row Level Security, Storage, Edge Functions
+Relational data suits attendance and fees, and RLS gives real security
+PDF generation
+jsPDF or react-pdf (client side)
+Receipts, report cards, hall tickets
+Email
+Supabase Auth emails for verification and reset, Resend free tier for notices
+Transactional email
+Payments (optional)
+Razorpay test mode
+Safe to demo without real money
+Hosting
+Vercel, Netlify, or Cloudflare Pages free tier
+Free deploys from a Git repo
+Google AI Studio also has a built-in Firebase option. If you prefer it, Firebase Auth and Firestore work, but you will need to write security rules very carefully because Firestore is not relational. This PRD assumes Supabase.
+Environment rules
+• Only the Supabase URL and anon (public) key may appear in frontend code. Both are designed to be public because RLS protects the data.
+• The service role key must never be placed in frontend code, in a prompt, or in a screenshot. If a feature needs it, it goes in a Supabase Edge Function.
+5. Feature specification
+5.1 Public website
+Landing page, About, Departments, Notices (public ones only), Contact, Login, Sign Up. Full spec in Section 7.
+5.2 Authentication and account
+• Email and password login, email verification, forgot and reset password.
+• Invitation acceptance flow for staff roles.
+• Session timeout after inactivity (30 minutes for staff, 7 days for students with Remember Me).
+• Optional TOTP two-factor authentication, required for Super Admin and Admin.
+• Profile page with photo, contact details, emergency contact, and a change password form.
+• Active sessions list with sign out of all devices.
+5.3 Dashboards (one per role)
+• Student: attendance percentage with shortage warning, today's timetable, next class countdown, pending fees, latest notices, mentor card, upcoming deadlines.
+• Parent: child switcher, attendance trend, latest marks, fee dues, leave status.
+• Faculty: today's classes with a Mark Attendance button, pending leave approvals from mentees, subjects overview, low-attendance student list.
+• HOD: department attendance heatmap, results summary, pending escalated leaves, mentor allocation status.
+• Accounts: collected versus pending this month, overdue list, recent payments, reminders sent.
+• Admin: user counts by role, pending student verifications, notices sent, import status.
+• Super Admin: everything above plus audit log feed and security events (failed logins, role changes).
+5.4 Attendance
+• Faculty marks attendance per subject, per period, per date, with a fast grid (tap to toggle, Mark All Present, then change exceptions). Statuses: Present, Absent, Late, On Duty, Approved Leave.
+• Approved leave automatically marks matching dates as Approved Leave.
+• Attendance can be edited by the marking faculty within 24 hours. After that, a correction request goes to the HOD with a reason, and every change is logged.
+• Students see subject-wise percentage, a monthly calendar view, and how many classes they can still miss while staying above the minimum (default 75 percent, configurable).
+• Automatic alerts at 80 and 75 percent thresholds, sent to the student, the mentor, and optionally the parent.
+• Export to CSV and PDF for HOD and Admin.
+5.5 Results, marks, and reports
+• Faculty enters internal assessment marks per exam component (Internal 1, Internal 2, Assignment, Lab). Admin publishes semester results after upload or entry.
+• Student sees marks per subject, grade, SGPA, and CGPA computed by a documented formula (credit weighted).
+• Performance chart by semester and subject comparison with class average (anonymised).
+• Downloadable report card PDF with college header, and hall ticket PDF for eligible students (attendance and fee clearance rules apply).
+• Results are hidden until the Admin sets a publish date.
+5.6 Fees and dues
+• Accounts defines fee structures by course, year, and category (tuition, exam, hostel, transport, library, miscellaneous) with due dates and optional late fine rules.
+• Fees are assigned to students individually or in bulk by batch, and concessions or scholarships can be applied with a reason.
+• Payments are recorded as cash, bank transfer, UPI reference, or gateway payment. Each payment generates a numbered receipt PDF.
+• Students and parents see: total, paid, due, overdue, installment schedule, and payment history.
+• Reminders go out 7 days, 2 days before, and on the day after the due date through in-app notice and email.
+• Hall ticket and result access can be blocked for students with overdue fees, controlled by an Admin setting.
+• Receipts are immutable. Corrections are made by a reversal entry, not an edit.
+5.7 Notices and notifications
+• Compose a notice with title, body, attachment, category (Academic, Exam, Fees, Event, Holiday, Urgent), and audience (whole college, department, batch, section, role, or specific people).
+• Optional schedule, expiry date, and pin to top.
+• In-app notification bell with unread count, read receipts for Admin, and email copy for Urgent notices.
+• Students can filter and search notices by category and date.
+5.8 Mentor and subject details (Get to know your mentor and subjects)
+• Each student has an assigned mentor (a faculty member) managed by the HOD.
+• Mentor card shows photo, designation, department, email, office hours, and cabin location. Students can book a mentoring slot.
+• Mentor keeps a private meeting log (date, discussion points, action items, student concerns). Students see the shared summary only.
+• Mentor sees a mentee overview: attendance, marks trend, fee status, leave history, and flagged risk indicators.
+• Subjects page lists each subject with code, credits, semester, syllabus PDF, faculty name and contact, attendance so far, and marks so far.
+• Faculty directory with search by name, department, and subject.
+5.9 Leave management
+• Student applies with type (Medical, Personal, On Duty, Event), date range, reason, and optional attachment such as a medical certificate.
+• Workflow: Student, then Mentor, then HOD (HOD step is required only for leaves longer than 3 days or on exam days). Each step records approver, time, and comment.
+• Statuses: Draft, Pending Mentor, Pending HOD, Approved, Rejected, Cancelled. Students can cancel while pending.
+• Faculty and HOD also apply for leave, routed to the HOD or Super Admin.
+• Approved leave shows on the attendance calendar and informs the relevant subject faculty.
+• Leave balance and history table with filters.
+5.10 Timetable and calendar
+• Weekly timetable by batch and by faculty, with room numbers and substitutions.
+• Academic calendar with holidays, exam schedule, and events, filterable by department.
+5.11 Additional high-value features
+• Global command palette (Ctrl or Cmd plus K) to jump to any page, student (for staff), or notice.
+• Grievance and helpdesk tickets with status tracking and category routing.
+• Assignment posting and submission tracker (faculty posts, student uploads, due dates).
+• Library module: catalogue search, issued books, due dates, fines (phase 2).
+• Bulk CSV import with a dry-run preview and error report for students, faculty, subjects, and fees.
+• Audit log for every sensitive action, readable only by Super Admin.
+• Light and dark theme, printable pages, keyboard accessible, installable PWA.
+• Empty states, skeleton loaders, and friendly error pages for every list.
+6. Design system
+The goal is a calm, editorial, trustworthy interface that feels designed by a person. It must not look like a default AI template.
+Hard rules
+• No purple, violet, or indigo gradients anywhere. No gradient text. No glassmorphism blobs or glowing orbs.
+• No emojis in the interface, copy, or code comments that render on screen. Use Lucide line icons only, at one consistent stroke width.
+• No generic stock gradients behind hero text. Use real photography or a restrained solid background.
+• No card-inside-card-inside-card nesting, no identical rounded cards repeated six times without variation.
+• Do not use filler marketing copy such as "seamless", "unleash", "next-generation", or "revolutionize".
+Colour tokens (CSS variables)
+Token
+Light
+Dark
+Use
+ink
+#0E1A2B
+#EEF1F5
+Primary text, dark sections
+paper
+#F6F4EF
+#0B1220
+Page background (warm off-white, not pure white)
+surface
+#FFFFFF
+#121B2D
+Cards, tables
+line
+#E3DFD6
+#223048
+Borders, dividers
+accent
+#1F4AB8
+#6C93F0
+Primary buttons, links, active nav
+brass
+#B07D1E
+#D9A441
+Sparing highlight such as badges and key numbers
+success
+#1E7A4C
+#4CC38A
+Present, paid, approved
+warning
+#B7791F
+#E5B04A
+Late, due soon, pending
+danger
+#B3261E
+#F0716A
+Absent, overdue, rejected
+Accent is a restrained cobalt. Use it for at most one primary action per screen.
+Typography
+• Headings: Newsreader or Fraunces (a serif with character), weights 500 to 600, tight tracking, large scale on the landing page.
+• Body and UI: Inter Tight or DM Sans, 15 to 16 px body, 1.6 line height.
+• Numbers in tables and stat tiles use tabular figures.
+• Type scale: 12, 14, 16, 20, 28, 40, 64, 88 px with a maximum line length of 68 characters.
+Layout and shape
+• 8 px spacing grid, 12 column layout, generous whitespace, content max width 1200 px.
+• Corner radius 10 px on cards and inputs, 999 px only on pills and avatars. Borders instead of heavy shadows. Shadows only on floating layers such as menus and dialogs.
+• Dashboards use a left sidebar (collapsible), top bar with search and notification bell, and a content area that varies its layout by page. Mix wide charts, narrow lists, and table views rather than a grid of equal tiles.
+Motion principles
+• Motion explains hierarchy or state change. It is never decoration.
+• Durations 150 to 250 ms for hover and press, 500 to 800 ms for scroll reveals, with ease-out cubic-bezier(0.22, 1, 0.36, 1).
+• Respect prefers-reduced-motion: replace movement with simple fades.
+• Animate only transform and opacity for performance.
+Hover and interaction patterns
+• Cards: 2 px upward lift, border colour shifts to accent, and a small arrow slides in.
+• Buttons: background deepens, 1 px press-down on active, focus ring of 2 px accent with 2 px offset.
+• Links: underline grows from the left.
+• Images: slow 1.04 scale on hover inside an overflow-hidden frame.
+• Table rows: soft background highlight and reveal of row actions.
+• Sidebar items: a vertical accent indicator slides between items using a shared layout animation.
+7. Landing page specification
+The landing page is the first impression and should feel like the website of a serious institution with modern craft.
+Sections in order
+1. Navigation bar. Logo wordmark on the left, links (Features, Roles, Security, FAQ), Login as a text link, and Sign Up as a solid button. Transparent over the hero, becomes a solid paper background with a thin bottom border after 40 px of scroll.
+2. Hero. Left-aligned large serif headline, for example "Every part of college life, in one place." with a short two-line supporting paragraph, two buttons (Login, Request access), and a small line of trust text such as "Role-based access. Encrypted. Built for your campus." On the right, a real campus photograph in a tall rounded frame with a slow parallax and a floating product card overlapping its edge showing a small attendance summary. Words in the headline reveal line by line on load.
+3. Department marquee. A slow, pausable horizontal strip of department names and course names, separated by thin dividers.
+4. Role switcher. A tabbed section: Students, Parents, Faculty, Department Heads, Accounts, Administration. Switching a tab animates a short list of what that role gets and swaps a matching dashboard preview. This replaces a generic features grid.
+5. Feature showcase (sticky scroll). A left column stays pinned with the title of the current feature while the right column scrolls through large real product screenshots built from actual components: Attendance, Results, Fees, Notices, Mentor, Leave. The active item is highlighted as you scroll.
+6. By the numbers. Four large figures with count-up animation when they enter the viewport (use clearly labelled placeholder values until real ones exist).
+7. How it works. Three steps (Get invited, Sign in, See your day) connected by a line that draws as you scroll.
+8. Security and privacy. A calm dark section (ink background) listing real practices: role-based access, encrypted connections, audit trail, two-factor for staff, data stays within the institution. Each item has a line icon and a one-sentence explanation.
+9. Notices preview. A list of three sample public notices with category tags, showing the real notice component.
+10. FAQ. Accordion with smooth height animation.
+11. Closing call to action. Campus photo with a dark overlay, one headline, one button.
+12. Footer. Four columns (Portal, Institution, Support, Legal), address, support email, copyright, and a back-to-top control.
+Landing page animation list
+• Scroll progress bar at the very top of the page (2 px, accent colour).
+• Staggered fade-and-rise on section headings and content blocks (24 px travel, once only).
+• Hero image parallax at roughly 0.85 speed.
+• Sticky scroll storytelling in section 5.
+• Count-up numbers, drawing connector line, accordion height animation.
+• Magnetic effect on the main call-to-action buttons (very subtle, 6 px maximum).
+• Smooth anchor scrolling with a header offset.
+Photography and assets
+Use real photography of a campus, students, and classrooms. In AI Studio, use placeholder image URLs from a free photo source and add a note listing where to replace them with the college's own photographs. Do not use illustrated 3D characters or abstract gradient blobs.
+8. Data model (Supabase Postgres)
+All tables have id (uuid), created_at, and updated_at. All tables have row-level security enabled with no default public access.
+Table
+Key columns and notes
+profiles
+id (matches auth user id), role, full_name, email, phone, photo_url, status (pending, active, suspended), department_id
+departments
+name, code, hod_id
+courses
+name, code, department_id, duration_years
+batches
+course_id, start_year, section
+students
+profile_id, enrolment_no, batch_id, current_semester, guardian_name, mentor_id
+faculty
+profile_id, employee_id, designation, office_hours, cabin
+parent_links
+parent_profile_id, student_id, status, approved_by
+subjects
+code, name, credits, semester, course_id, syllabus_url
+subject_assignments
+subject_id, faculty_id, batch_id, academic_year
+timetable_slots
+batch_id, subject_assignment_id, weekday, period, start_time, end_time, room
+attendance_sessions
+subject_assignment_id, date, period, marked_by, locked_at
+attendance_records
+session_id, student_id, status
+attendance_corrections
+record_id, requested_by, reason, status, reviewed_by
+exam_components
+subject_id, name, max_marks, weightage
+marks
+component_id, student_id, marks_obtained, entered_by
+results
+student_id, semester, sgpa, cgpa, published_at
+fee_structures
+course_id, year, category, amount, due_date, fine_rule
+fee_assignments
+student_id, structure_id, amount, concession, concession_reason, status
+payments
+assignment_id, amount, mode, reference, receipt_no, recorded_by, reversed_of
+notices
+title, body, category, audience (json), attachment_url, publish_at, expires_at, pinned, created_by
+notice_reads
+notice_id, user_id, read_at
+mentor_meetings
+mentor_id, student_id, date, private_notes, shared_summary, action_items
+leave_requests
+applicant_id, type, from_date, to_date, reason, attachment_url, status
+leave_approvals
+leave_id, step, approver_id, decision, comment, decided_at
+tickets
+raised_by, category, subject, body, status, assigned_to
+audit_logs
+actor_id, action, entity, entity_id, metadata, ip, created_at (append only)
+settings
+key, value (minimum attendance, publish rules, fine rules)
+Important database behaviours: attendance_records and payments cannot be hard deleted, audit_logs can only be inserted, and a database function current_role() reads the caller's role from profiles for use inside policies.
+9. Authentication and security specification
+Authentication
+• Supabase Auth with email and password. Minimum 10 characters, checked against a short list of common passwords. Show a strength meter.
+• Email must be verified before first login.
+• Login rate limiting and temporary lockout after 5 failed attempts, with a generic error message that does not reveal whether the email exists.
+• Password reset links expire in 1 hour and are single use.
+• TOTP two-factor authentication required for Super Admin and Admin, optional for others.
+• Inactivity logout with a warning dialog 2 minutes before expiry.
+Authorisation
+• Row Level Security policies on every table. The frontend hides what a role cannot use, but the database is the real gatekeeper.
+• Role is read from the database profile, never from local storage, URL, or a client-editable token claim.
+• Parents can read only rows for students in an approved parent_links record.
+• Faculty can read and write only rows tied to their own subject assignments or mentees.
+Application security
+• Validate every form with Zod and re-validate on the server side (Edge Function or database constraint).
+• Never render user supplied HTML. Escape output and sanitise any rich text.
+• File uploads: allow only PDF, PNG, and JPG, limit to 5 MB, check type, store in private buckets, and serve through short-lived signed URLs.
+• Secure HTTP headers set at the host: Content Security Policy, X-Content-Type-Options, Referrer-Policy, and frame protection.
+• No secrets, keys, or personal data in console logs or error messages.
+• Audit log entry for logins, failed logins, role changes, fee payments and reversals, attendance corrections, result publishing, and data exports.
+• Export actions require re-entering the password for Admin roles.
+Privacy
+• Collect only the data needed. Show a clear privacy notice at sign-up.
+• Students can view their own data and request correction through a ticket.
+• Demo and seed data must be fictional. Never paste real student data into AI Studio or any prompt.
+10. The Vibe Coding Checklist applied to this project
+10.1 Master the Plan-Review-Fix cycle
+1. Plan. Before any module, ask the AI to write a plan: files it will create, components, data it needs, and edge cases. Say explicitly "do not write code yet".
+2. Review. Read the plan. Check it against this PRD. Correct anything wrong in plain words ("attendance must be editable for 24 hours only"). Approve with "proceed with step 1 only".
+3. Fix. After each build, test it yourself: click every button, try wrong inputs, try each role. Report bugs one at a time with the exact steps, the expected result, and the actual result. Do not say "it is broken" without detail.
+After every successful module, save a version in AI Studio and note it in your PROJECT_STATE file (see 10.3).
+10.2 Strict security safeguards
+• Never paste real student names, phone numbers, marks, or keys into prompts. Use fictional seed data.
+• Keep the Supabase service role key out of the frontend, out of prompts, and out of screenshots. Only the URL and anon key go in the client.
+• Ask for RLS policies before building screens that read data, and test policies with at least two accounts per role.
+• Ask the AI to explain every policy in plain English so you can verify it matches Section 3.
+• Run the Security Audit prompt (Prompt 13) before sharing the link with anyone.
+• Turn on email verification and rate limiting in the Supabase dashboard yourself. Do not assume the generated code did it.
+• Review dependencies the AI adds. Prefer well-known packages and reject anything unfamiliar.
+10.3 Manage context to avoid the doom loop
+The doom loop is when the AI keeps patching the same bug, each patch breaking something else. Avoid it like this:
+• Keep a file in the project called PROJECT_STATE.md with: stack, folder structure, completed modules, known issues, and design tokens. Ask the AI to update it after every module.
+• One module per prompt. One bug per prompt.
+• If the same bug survives two attempts, stop. Revert to the last good version, then re-prompt with a more specific description or ask for a different approach.
+• When the chat becomes long and the AI starts forgetting rules, open a new chat, paste Prompt 0 and the current PROJECT_STATE.md, and continue.
+• Ask "before changing anything, list the files you will touch and why". This prevents rewrites of working code.
+10.4 Big pictures first, then micro-details
+Build in this order and do not skip ahead:
+1. Structure: roles, routes, database, auth.
+2. Core workflows: attendance, fees, leave, notices.
+3. Remaining modules: results, mentor, timetable, tickets.
+4. Visual polish: spacing, typography, motion, hover states.
+5. Edge cases: empty, loading, error, offline, long text, small screens.
+6. Performance, accessibility, security audit, deployment.
+11. Build order at a glance
+Step
+Prompt
+Output
+Review before moving on
+0
+Master context
+AI understands the project and rules
+Nothing to review
+1
+Plan only
+Architecture and file plan
+Compare with PRD
+2
+Design system
+Tokens, fonts, base components
+Check colours, no purple, no emojis
+3
+Landing page
+Complete marketing site with animation
+Scroll through on desktop and phone
+4
+Database and RLS
+SQL schema and policies
+Read each policy
+5
+Authentication
+Sign up, login, reset, invites, 2FA
+Try to break it
+6
+App shell and routing
+Role-based layouts
+Log in as each role
+7
+Student module
+Student pages
+Test with seed data
+8
+Faculty module
+Attendance, marks, mentoring
+Mark attendance end to end
+9
+Fees module
+Accounts and student views, receipts
+Check totals by hand
+10
+Leave and notices
+Workflows
+Run the full approval chain
+11
+Parent, HOD, Admin
+Remaining dashboards
+Check each role boundary
+12
+Polish and motion
+Animations, hover, states
+Test reduced motion
+13
+Security audit
+Findings and fixes
+Fix all high findings
+14
+QA and deploy
+Final fixes, hosting
+Lighthouse and role tests
+12. The prompts
+Paste each prompt into Google AI Studio in order. Replace the text in square brackets where it appears.
+Prompt 0: Master context (paste first, in a fresh chat)
+You are a senior full-stack engineer and product designer. We are building "Campus Portal", a role-based college management web app. Follow every instruction below for the whole project.
+
+PRODUCT
+A secure portal for students, parents, faculty, HODs, accounts officers, admins, and a super admin. Modules: attendance, results and report cards, fees and dues with receipts, notices and notifications, mentor and subject details, leave management with multi-step approval, timetable, grievance tickets, assignments, audit logs.
+
+ROLES
+super_admin, admin, accounts, hod, faculty, student, parent, librarian (phase 2). Role is stored in the database profile and enforced with Row Level Security. Users never choose their own role. Staff accounts are created by invitation. Students sign up and stay in a pending state until verified.
+
+TECH STACK (free tier only)
+React 18, Vite, TypeScript, Tailwind CSS using CSS variables for design tokens, Radix UI primitives, Framer Motion, Lucide React icons, Recharts, React Hook Form with Zod, React Router, TanStack Query, Supabase (Postgres, Auth, RLS, Storage, Edge Functions), jsPDF for PDFs.
+
+DESIGN RULES (strict)
+- No purple, violet or indigo gradients. No gradient text. No glowing blobs, no glassmorphism.
+- No emojis anywhere in the UI or copy. Use Lucide line icons only, one stroke width.
+- Warm off-white page background, deep navy ink text, one restrained cobalt accent, brass used sparingly.
+- Serif headings (Newsreader or Fraunces), clean sans body (Inter Tight or DM Sans). Tabular numbers in data.
+- Borders over heavy shadows. 10px radius. 8px spacing grid. Varied layouts, not a wall of identical cards.
+- No marketing clichés such as seamless, unleash, revolutionize, next-generation.
+- Motion must have purpose, use transform and opacity only, and respect prefers-reduced-motion.
+- It must look hand-designed by a professional, like the website of a respected institution.
+
+SECURITY RULES (strict)
+- Only the Supabase URL and anon key may appear in client code. Never use or ask for the service role key in the frontend.
+- Every table has RLS enabled. The database is the gatekeeper, the UI only hides things.
+- Validate all inputs with Zod. Never render raw HTML from users. Uploads limited to PDF, PNG, JPG, 5 MB, private buckets, signed URLs.
+- Generic error messages for authentication failures. No sensitive data in logs.
+- Log sensitive actions to an append-only audit_logs table.
+
+WORKING RULES
+- Work in small steps. Do one module per message and stop when it is done.
+- Before changing existing code, list the files you will touch and why. Never rewrite working files without being asked.
+- Keep components small, typed, and reusable. Handle loading, empty and error states in every list and form.
+- Use fictional seed data only.
+- Maintain a file PROJECT_STATE.md listing stack, folder structure, completed modules, known issues, and design tokens. Update it at the end of every module.
+- If something is ambiguous, ask me one concise question instead of guessing.
+
+Acknowledge these rules in five lines and wait for my next instruction. Do not write any code yet.
+Prompt 1: Plan only
+Here is the master PRD for the project: [paste Sections 2 to 9 of this document].
+
+Do NOT write code yet. Produce a build plan with:
+1. Folder structure for the React app.
+2. List of routes grouped by role, with the guard rule for each.
+3. List of shared components and the pages that use them.
+4. The order of build steps with the risk in each step.
+5. Any gaps, contradictions or risky assumptions you see in the PRD.
+6. A list of questions you need answered.
+
+Keep it concise and structured. Wait for my approval before building.
+Review step: read the plan, answer its questions, fix wrong assumptions, then reply "Approved. Start with Prompt 2 tasks only."
+Prompt 2: Design system and base components
+Build only the design system. No pages yet.
+
+Create:
+- CSS variables for the colour tokens below, in light and dark themes, wired into Tailwind.
+  ink #0E1A2B, paper #F6F4EF, surface #FFFFFF, line #E3DFD6, accent #1F4AB8, brass #B07D1E, success #1E7A4C, warning #B7791F, danger #B3261E. Dark theme: paper #0B1220, surface #121B2D, line #223048, ink #EEF1F5, accent #6C93F0, brass #D9A441, success #4CC38A, warning #E5B04A, danger #F0716A.
+- Google Fonts: Newsreader for headings, Inter Tight for body. Define a type scale (12, 14, 16, 20, 28, 40, 64, 88) with tight heading tracking.
+- Base components: Button (primary, secondary, ghost, danger, loading state), Input, Select, Textarea, Checkbox, Switch, Badge (status colours), Card, Table (with sticky header and row hover actions), Tabs, Dialog, Dropdown, Tooltip, Toast, Skeleton, EmptyState, Avatar, Breadcrumbs, Pagination.
+- Interaction patterns: card hover lifts 2px and border turns accent, link underline grows from left, button press-down 1px, focus ring 2px accent with 2px offset, image hover scale 1.04.
+- A shared motion helper with Reveal (fade and rise 24px, once, 600ms, cubic-bezier(0.22,1,0.36,1)), Stagger, and CountUp components that respect prefers-reduced-motion.
+- A temporary /design route that shows every component in every state, in light and dark.
+
+No purple, no gradients, no emojis. Update PROJECT_STATE.md and stop.
+Prompt 3: Landing page
+Build the public landing page at "/" using the design system. Follow this structure exactly.
+
+1. Sticky nav: wordmark left; Features, Roles, Security, FAQ; Login text link; Sign Up solid button. Transparent over hero, solid paper background with a bottom border after 40px scroll. Mobile: full-screen menu with staggered links.
+2. Hero: left-aligned huge serif headline "Every part of college life, in one place." revealing line by line on load; two-line supporting text; buttons Login and Request access; one line of small trust text. Right side: tall rounded campus photo with subtle parallax and an overlapping floating summary card (attendance 92 percent, next class, fees due) built from real components.
+3. Department marquee: slow pausable horizontal strip of department and course names with thin dividers.
+4. Role switcher: tabs for Students, Parents, Faculty, Department Heads, Accounts, Administration. Switching tabs animates a short capability list and swaps a mini dashboard preview.
+5. Sticky-scroll feature showcase: left column pinned with the current feature title and description; right column scrolls through large product previews for Attendance, Results, Fees, Notices, Mentor, Leave. Active item highlights as you scroll.
+6. Numbers section: four large figures with count-up on entering the viewport. Mark them as placeholder values in a code comment.
+7. How it works: three steps (Get invited, Sign in, See your day) joined by a line that draws on scroll.
+8. Security section on an ink background: role-based access, encrypted connections, audit trail, two-factor for staff, institution-controlled data. Line icons, one sentence each.
+9. Public notices preview with category badges.
+10. FAQ accordion with smooth height animation.
+11. Closing CTA over a campus photo with dark overlay.
+12. Footer with four columns, address, support email, copyright, back to top.
+
+Global behaviours: 2px scroll progress bar at the top in accent colour, staggered section reveals once only, very subtle magnetic effect on main CTAs (max 6px), smooth anchor scrolling with header offset, hover patterns from the design system on every interactive element.
+
+Images: use placeholder photo URLs of campuses and students and add a comment listing every image to replace with the college's own photos. No illustrations, no gradients, no emojis.
+
+Write honest, specific copy, not marketing clichés. Make it fully responsive from 360px to 1440px. Update PROJECT_STATE.md and stop.
+Review step: scroll on a phone width and desktop, check that nothing looks like a template, then ask for targeted fixes such as "the feature section heading is too small on desktop, increase it to 56px".
+Prompt 4: Database schema and Row Level Security
+Do not build any screens. Produce one SQL migration file for Supabase Postgres.
+
+Include: all tables from the data model below with types, constraints, foreign keys, indexes and created_at, updated_at triggers; enums for role, status, attendance status, leave status, notice category; the helper function current_role() that reads the caller's role from profiles; and Row Level Security enabled on EVERY table.
+
+[paste the data model table from Section 8]
+
+Policies required (write one per table and operation, with a comment explaining each in plain English):
+- Students read only their own rows (profile, attendance, marks, results, fees, payments, leave, tickets, mentor meeting shared summary only).
+- Parents read only rows for students linked through an approved parent_links record, read-only.
+- Faculty read and write attendance and marks only for their own subject assignments, and see only their own mentees.
+- HOD reads everything in their department and approves escalated leave.
+- Accounts manages fee structures, assignments and payments only.
+- Admin manages academic structure, users (not super_admin), notices, timetable.
+- Super admin reads audit logs. Nobody can update or delete audit_logs. Nobody can delete payments or attendance records. Payments are corrected by reversal rows.
+- Users cannot change their own role or status.
+
+Also write: a seed script with fictional data (2 departments, 1 course, 2 batches, 12 students, 4 faculty, 1 HOD, 1 accounts officer, 1 admin, 2 parents, subjects, timetable, sample attendance, marks, fees, notices); and a test checklist of 15 queries I should run while logged in as different roles to prove the policies work.
+
+Explain every policy briefly so I can verify it against the roles table. Stop after the SQL.
+You run the SQL in the Supabase SQL editor. Do the 15 test queries before continuing.
+Prompt 5: Authentication
+Build the complete authentication system with Supabase Auth. No dashboards yet.
+
+Pages: Login, Student Sign Up (college email, enrolment number, name, password), Verify Email notice, Forgot Password, Reset Password, Accept Invitation (for staff), Pending Approval screen, Two-Factor Setup and Challenge (TOTP), Account Locked notice.
+
+Rules:
+- Password minimum 10 characters, block a list of common passwords, strength meter, show-password toggle.
+- Email must be verified before login. Generic error messages that do not reveal whether an email exists.
+- Client-side rate limiting and lockout screen after 5 failed attempts in 15 minutes, plus a note on enabling server-side rate limits in the Supabase dashboard.
+- Sign up creates a profile with role student and status pending. The role is never sent from the client. Use a database trigger to create the profile.
+- Invitations: an Edge Function (using the service role key only inside the function) lets admin create staff and parent invitations. Show me the function code and the exact secrets I must set in Supabase.
+- Session: persist securely, 30 minute inactivity timeout for staff with a warning dialog 2 minutes before, 7 days for students with Remember Me.
+- TOTP required for super_admin and admin, optional for others.
+- Profile page: edit details, change password, list active sessions, sign out everywhere.
+- Write sign-in, failed sign-in, password reset and role change events to audit_logs through a safe path.
+- A useAuth hook and a ProtectedRoute component that reads the role from the profile table, never from local storage or the URL.
+
+Use Zod and React Hook Form. Accessible forms with proper labels and error text. Same visual language as the landing page, split layout with a calm campus photo. Update PROJECT_STATE.md. Then give me a list of 10 ways to try to break this auth flow so I can test it.
+Prompt 6: App shell and role routing
+Build the authenticated app shell. Use placeholder content in pages.
+
+- Left sidebar (collapsible, remembers state), top bar with command palette trigger (Ctrl or Cmd plus K), notification bell with unread count, theme toggle, and profile menu.
+- Navigation items per role exactly as follows. Student: Dashboard, My Profile, Courses and Subjects, Attendance, Results, Fees, Notices, Mentor, Leave, Timetable, Library. Parent: Dashboard, Child Overview, Attendance, Results, Fees, Notices, Leave Status. Faculty: Dashboard, My Classes, Attendance, Marks, Mentees, Leave, Notices, Timetable. HOD: Dashboard, Department, Attendance Reports, Results, Leave Approvals, Mentors, Notices. Accounts: Dashboard, Fee Structures, Assignments, Payments, Dues, Reports. Admin: Dashboard, Users, Academics, Timetable, Notices, Imports, Tickets. Super Admin: all Admin items plus Audit Log and Settings.
+- Active nav indicator slides between items with a shared layout animation. Page transitions fade and rise 8px.
+- Role-based route guards. Visiting a route outside your role shows a clear Not Authorised page. 404 and error pages with a link home.
+- Breadcrumbs, page header component with title, description and primary action slot.
+- Fully responsive: sidebar becomes a bottom sheet menu on mobile.
+
+Show me the route table with the guard on each route, then update PROJECT_STATE.md and stop.
+Prompt 7: Student module
+Build the Student role pages using real Supabase queries through TanStack Query.
+
+1. Dashboard: attendance percentage with a warning state under 80 percent and a critical state under 75 percent, today's timetable with a next-class countdown, pending fees summary, latest 3 notices, mentor card, upcoming deadlines. Use varied layout: one wide chart, one narrow list, one summary strip. Do not make four identical stat cards.
+2. Attendance: subject-wise percentage bars, monthly calendar view with status colours, a calculator showing "classes you can still miss" per subject, filter by date range.
+3. Results: marks per subject and component, grade, SGPA, CGPA with the formula explained in a tooltip, semester selector, class average comparison chart, Download Report Card PDF. Hidden until published.
+4. Courses and Subjects: list with code, credits, faculty contact, syllabus link, attendance so far and marks so far.
+5. Mentor: mentor profile card, office hours, book a slot, shared meeting summaries.
+6. Profile: view and edit allowed fields.
+
+Every list needs skeleton loading, an empty state with guidance, and an error state with retry. Tables must be keyboard accessible. Use seed data to verify. Update PROJECT_STATE.md and stop.
+Prompt 8: Faculty module
+Build the Faculty role pages.
+
+1. Dashboard: today's classes with a Mark Attendance button, pending mentee leave approvals, low-attendance students list, quick links.
+2. Mark Attendance: choose subject, batch, date, period. A fast grid of students with tap-to-toggle statuses (Present, Absent, Late, On Duty), Mark All Present, a live count, auto-fill Approved Leave from approved leave requests, save with confirmation. After 24 hours the session locks, and edits go through a correction request with a reason to the HOD. Keep it fast for 60 students and usable on a phone.
+3. Marks entry: choose component, enter marks in a keyboard-friendly table with validation against max marks, save draft, submit for publishing.
+4. Mentees: list with attendance, marks trend, fee status, leave history and a risk flag. Mentor meeting log with private notes and a shared summary field.
+5. Leave: approve or reject mentee leave with comment.
+6. Timetable: weekly view with substitutions.
+
+Write attendance changes and corrections to audit_logs. Update PROJECT_STATE.md and stop.
+Prompt 9: Fees module
+Build the Fees module for Accounts and Students (and read-only for Parents).
+
+Accounts: fee structure builder by course, year and category with due dates and fine rules; assign fees to a batch or a single student with concession and required reason; record payment (cash, bank, UPI reference, gateway) with automatic numbered receipt; reverse a payment with a reason (never edit or delete); overdue list with one-click reminder; reports with filters and CSV export.
+
+Student and Parent: summary (total, paid, due, overdue), installment schedule, payment history, download receipt PDF with college header, fine calculation shown clearly. Block hall ticket download when the Admin setting for fee clearance is on and there are overdue dues.
+
+All money calculations must use integer paise or a decimal library, never floating point. Show me the calculation functions and write unit tests for them. Log payments and reversals to audit_logs. Update PROJECT_STATE.md and stop.
+Prompt 10: Leave management and notices
+Build two modules.
+
+LEAVE: Student applies (type, dates, reason, optional attachment through a private bucket with signed URLs). Workflow Student, Mentor, then HOD only when leave exceeds 3 days or falls on an exam day. Statuses Draft, Pending Mentor, Pending HOD, Approved, Rejected, Cancelled. Each step records approver, time and comment. Student can cancel while pending. Timeline view of status for the applicant. Approved leave appears on the attendance calendar and informs subject faculty. Faculty and HOD can also apply, routed to the HOD or Super Admin.
+
+NOTICES: Compose with title, body, category, attachment, audience (whole college, department, batch, section, role, specific people), schedule, expiry and pin. Notification bell shows unread count, with read receipts visible to Admin. Urgent notices also send an email through an Edge Function. Notice list with search and category filters.
+
+Show me the status transition rules as a table before writing the code. Update PROJECT_STATE.md and stop.
+Prompt 11: Parent, HOD, Admin and Super Admin dashboards
+Build the remaining role dashboards.
+
+- Parent: child switcher, attendance trend, latest marks, fee dues, leave status, notices. Read-only. Linking flow using a single-use code approved by the office.
+- HOD: department attendance heatmap, results summary, escalated leave approvals, mentor allocation screen to assign and rebalance mentors, department notices.
+- Admin: user management with search, invite, suspend, role change (not super_admin), pending student verification queue, academic structure management, timetable builder, bulk CSV import with dry-run preview and error report, tickets.
+- Super Admin: everything above plus audit log viewer with filters and export, security events, system settings (minimum attendance, fee clearance rule, publish rules).
+
+Also build the grievance ticket flow and the assignments tracker. Use a mix of table, chart and list layouts so pages do not look repetitive. Update PROJECT_STATE.md and stop.
+Prompt 12: Polish, motion and states
+Do a polish pass without changing functionality.
+
+- Audit spacing against the 8px grid, type scale, and alignment on every page. List inconsistencies first, then fix them.
+- Add hover, focus and active states to every interactive element using the design system patterns. Add shared-layout animations to tabs and the sidebar indicator, number transitions on dashboard figures, and chart entrance animations.
+- Add proper skeleton, empty and error states anywhere missing.
+- Check colour contrast for WCAG AA in light and dark themes. Fix failures.
+- Make sure every animation respects prefers-reduced-motion and uses only transform and opacity.
+- Check every page at 360, 768 and 1280 px.
+- Remove any gradient, glow or emoji that slipped in. Confirm no purple remains.
+
+Give me a before and after list of changes. Update PROJECT_STATE.md.
+Prompt 13: Security audit
+Act as a security reviewer and audit this whole project. Do not add features.
+
+Check and report with severity (high, medium, low) and exact file and line:
+1. Any secret, service role key or personal data in client code, logs or comments.
+2. Every table has RLS and each policy matches the roles table. Try to find a path where a student reads another student's data, a parent writes data, a faculty reads another faculty's class, or anyone changes their own role.
+3. Authentication: rate limiting, error message leakage, session handling, password reset, invitation abuse, TOTP enforcement.
+4. Input validation and output escaping: XSS, injection through search, filters and CSV import.
+5. File uploads: type, size, private bucket, signed URL expiry.
+6. Audit log coverage and tamper resistance.
+7. Dependencies: anything outdated, unmaintained or unnecessary.
+8. Security headers and the Content Security Policy needed for the host I will use.
+
+Then fix all high severity issues, explain each fix in two lines, and give me a manual test script I can follow to confirm.
+Prompt 14: QA and deployment
+Prepare for deployment.
+
+- Write a manual QA script per role covering every workflow with expected results.
+- Fix console errors and warnings, remove unused code and dependencies.
+- Add a PWA manifest and service worker for installability, caching static assets only (never authenticated data).
+- Add meta tags, Open Graph tags, favicon set and a sitemap for the public pages.
+- Give me the exact environment variables to set on [Vercel or Netlify or Cloudflare Pages], the security headers file, and step-by-step deploy instructions.
+- Give me the Supabase production checklist: auth settings, rate limits, redirect URLs, storage bucket policies, backups.
+- List remaining known issues in PROJECT_STATE.md.
+13. Bug-fix prompt template
+Use this whenever something breaks, one bug at a time.
+Bug: [one sentence].
+Steps: [1, 2, 3].
+Expected: [what should happen].
+Actual: [what happens, include the exact error text from the console].
+Role and page: [for example student, /attendance].
+
+Before changing code, explain the likely cause in two sentences and list the files you will touch. Fix only this bug. Do not refactor or restyle anything else.
+If the same bug is not fixed after two attempts, restore the last good version in AI Studio, start a new chat with Prompt 0 and PROJECT_STATE.md, and describe the bug again from scratch.
+14. Final acceptance checklist
+• Every role can log in, sees only its own navigation, and is blocked from other roles' routes.
+• Two students cannot see each other's data in the database, confirmed with direct queries.
+• A parent can read but never write. A faculty member cannot read another faculty member's classes.
+• Attendance can be marked in under 60 seconds for 60 students, locks after 24 hours, and corrections are logged.
+• Fee totals match hand calculations. Receipts cannot be edited. Reversals appear in the audit log.
+• Leave moves through every approval step and appears on the attendance calendar.
+• Notices reach only the intended audience.
+• No purple, no gradient text, no emojis, no template-looking card walls anywhere.
+• Landing page scores 90 or above on Lighthouse for performance, accessibility and best practices.
+• Reduced-motion mode works. All pages work from 360 px wide.
+• No secrets in the repository. Service role key exists only in Supabase Edge Function secrets.

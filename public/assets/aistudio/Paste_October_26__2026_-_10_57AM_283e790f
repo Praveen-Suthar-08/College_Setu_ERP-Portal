@@ -1,0 +1,1611 @@
+# COMPLETE MASTER PROMPT: PROFESSIONAL COLLEGE PORTAL REDESIGN
+
+## 1. PROJECT OVERVIEW
+
+Redesign and improve my existing College Portal web application, including both the **College Organizer Dashboard** and the **Student Dashboard**.
+
+I have provided screenshots of the current organizer and student dashboards. Study these screenshots to understand the existing layout, navigation, information architecture, and available functionality.
+
+The current application includes student management, organizer registration, college access codes, attendance, examinations, academic timetables, fee management, faculty mentoring, leave applications, announcements, grievances, helpdesk tickets, platform activity, and other institutional management features.
+
+I want the entire interface redesigned to look like a professionally developed, production-ready college management platform.
+
+### The primary goals are:
+
+1. Create a sophisticated, professional, enterprise-grade UI.
+2. Redesign both organizer and student dashboards.
+3. Eliminate the generic, AI-generated appearance of the current interface.
+4. Use a restrained navy, white, charcoal, and neutral-gray color palette.
+5. Improve layout, spacing, typography, alignment, and readability.
+6. Make better use of available desktop screen space.
+7. Create consistent designs across all existing modules.
+8. Preserve all existing backend functionality and database relationships.
+9. Fix incorrect timetable ordering and duplicate records.
+10. Ensure genuine real-time synchronization between students, organizers, and faculty.
+11. Maintain correct user data, role permissions, and institutional isolation.
+12. Make the entire application responsive and accessible.
+
+**IMPORTANT: Redesign the existing application directly. Do not create a separate application, replace the existing backend unnecessarily, or remove working features.**
+
+---
+
+# 2. STRICT DESIGN DIRECTION: NO VIBE-CODED UI
+
+The application must look like a serious institutional software product designed by an experienced UI/UX team.
+
+Avoid the visual style commonly associated with generic AI-generated dashboards.
+
+The design should be clean, restrained, structured, functional, and visually consistent.
+
+### The interface must NOT contain:
+
+- Purple gradients.
+- Violet gradients.
+- Multicolor gradients.
+- Neon colors.
+- Glowing borders.
+- Excessive glassmorphism.
+- Rainbow-colored dashboard cards.
+- Large decorative background shapes.
+- Oversized icons.
+- Excessive rounded capsules.
+- Heavy shadows on every card.
+- Unnecessary animations.
+- Decorative charts with meaningless data.
+- Excessive badges and colorful pills.
+- Randomly colored buttons.
+- Huge welcome headings.
+- Tiny, unreadable labels.
+- Unnecessary whitespace that makes the application look unfinished.
+
+Do not attempt to make the interface look premium by adding more colors or decorative effects.
+
+**The design must achieve its quality through excellent spacing, typography, alignment, hierarchy, consistency, and functional clarity.**
+
+---
+
+# 3. PROFESSIONAL COLOR SYSTEM
+
+Use a restrained, consistent color palette throughout the entire application.
+
+| Design Element | Color | Hex |
+|---|---|---|
+| Primary brand | Deep navy | #243B53 |
+| Secondary brand | Slate blue | #486581 |
+| Main background | Light neutral gray | #F5F6F8 |
+| Card background | White | #FFFFFF |
+| Primary text | Charcoal | #202B38 |
+| Secondary text | Slate gray | #667085 |
+| Muted text | Medium gray | #98A2B3 |
+| Borders | Light gray | #E2E6EB |
+| Selected navigation | Pale blue-gray | #EAF0F6 |
+| Success | Muted green | #287D5A |
+| Warning | Muted amber | #A66A16 |
+| Error | Muted red | #B54747 |
+| Information | Muted blue | #356A9A |
+
+### Color usage rules
+
+- Use white as the primary surface color.
+- Use light neutral gray for the overall page background.
+- Use deep navy for primary actions, links, and selected navigation.
+- Use charcoal for headings and important content.
+- Use muted gray for supporting information.
+- Use green, amber, and red only when communicating meaningful statuses.
+- Keep most of the interface neutral.
+- Use color to improve understanding, not as decoration.
+
+Do not introduce additional accent colors without a clear functional reason.
+
+Do not use purple or violet gradients anywhere.
+
+---
+
+# 4. TYPOGRAPHY AND VISUAL HIERARCHY
+
+Use Inter or another clean, professional sans-serif font already available in the project.
+
+Maintain a consistent typography scale.
+
+Suggested sizes:
+
+- Main page headings: 24–28px.
+- Section headings: 17–20px.
+- Card headings: 14–16px.
+- Body text: 13–14px.
+- Table text: 13–14px.
+- Supporting labels: 12px.
+- Buttons: 13–14px.
+
+Use consistent font weights.
+
+Avoid making every heading bold.
+
+Avoid excessive uppercase labels.
+
+Use readable line heights and sufficient contrast.
+
+Ensure that all information remains readable on standard desktop and laptop displays.
+
+Do not shrink text to fit unnecessarily crowded cards. Redesign the layout instead.
+
+---
+
+# 5. GLOBAL APPLICATION LAYOUT
+
+Create one consistent layout system for both roles.
+
+The primary layout should contain:
+
+1. Left navigation sidebar.
+2. Top application header.
+3. Breadcrumb navigation.
+4. Main page content.
+5. Optional contextual panels when appropriate.
+
+### Desktop layout
+
+- Persistent left sidebar.
+- Compact top header.
+- Main content using a responsive grid.
+- Consistent horizontal and vertical spacing.
+- Appropriate content widths.
+- Readable data tables.
+- Balanced card proportions.
+
+### Screen utilization
+
+The current screenshots show content occupying a relatively narrow central area while leaving substantial unused space on larger displays.
+
+Fix this by allowing the main content area to expand appropriately with the viewport.
+
+Use a responsive grid and sensible maximum content width.
+
+Do not place the entire dashboard inside a narrow fixed-width container.
+
+Do not stretch every card across the full screen.
+
+Use the available width intelligently.
+
+### Spacing
+
+Use a consistent spacing system.
+
+- Page padding: approximately 24–32px on desktop.
+- Major section spacing: approximately 20–24px.
+- Card padding: approximately 16–20px.
+- Form field spacing: approximately 12–16px.
+- Small element spacing: approximately 8px.
+
+Adjust these values responsively.
+
+### Card design
+
+Use:
+
+- White backgrounds.
+- Thin neutral borders.
+- Subtle or no shadows.
+- Consistent corner radii of approximately 6–10px.
+- Clear internal spacing.
+- Minimal decorative elements.
+
+Avoid making every component look like a floating rounded card.
+
+Use tables, separators, headings, and simple sections where these provide better information density.
+
+---
+
+# 6. SHARED SIDEBAR AND NAVIGATION
+
+Create a clean, professional sidebar shared by both roles.
+
+The organizer and student interfaces should have the same visual identity but different navigation items according to their permissions.
+
+## A. Sidebar Header
+
+Display:
+
+- College Portal logo.
+- College Portal name.
+- Institutional Workspace subtitle, where appropriate.
+
+Use a compact layout.
+
+Include a collapse button on desktop.
+
+## B. Organizer Navigation
+
+Preserve the existing organizer modules, including:
+
+- Dashboard Overview.
+- My Profile.
+- Attendance Register.
+- Exams & Grade Cards.
+- Academic Timetable.
+- Fee Ledger & Receipts.
+- Circulars & Notices.
+- Leave Applications.
+- Grievance & Helpdesk.
+- Leave & Rule Registry.
+- Bulk CSV Import.
+- Platform Activity & Audit Log.
+- System Diagnostics.
+
+Retain any other existing organizer modules that are currently available.
+
+## C. Student Navigation
+
+Preserve the existing student modules, including:
+
+- Dashboard Overview.
+- My Profile.
+- Attendance Register.
+- Exams & Grade Cards.
+- Academic Timetable.
+- Fee Ledger & Receipts.
+- Circulars & Notices.
+- Faculty Mentoring.
+- Leave Applications.
+- Coursework & Rules.
+- Grievance & Helpdesk.
+
+Retain other legitimate student modules already present.
+
+## D. Navigation Styling
+
+Use:
+
+- A white sidebar.
+- A subtle neutral border.
+- Consistent icon sizes.
+- Dark charcoal labels.
+- Muted secondary icons.
+- A pale blue-gray background for the active item.
+- A navy active indicator.
+
+Avoid bright gradients, excessive animations, and unnecessary decorations.
+
+## E. Sidebar Footer
+
+Display:
+
+- Authenticated user's avatar.
+- User's actual name.
+- Role.
+- Account menu.
+- Sign-out action.
+
+Retrieve these details from the authenticated account.
+
+Never hardcode a user identity.
+
+## F. Remove College Switching from Student Navigation
+
+Remove the Switch College / Switch College Code feature from the student panel.
+
+Remove the associated button, menu, or action from the student dashboard.
+
+Students must not be able to change their institutional association through an ordinary student-facing action.
+
+Keep the student's registered college name and college code visible where relevant.
+
+Do not delete the underlying college registration code system.
+
+Preserve authorized administrative transfer functionality if such a workflow already exists.
+
+---
+
+# 7. SHARED TOP HEADER
+
+Create a clean top header for both dashboards.
+
+Include:
+
+- Breadcrumbs.
+- Global search.
+- Notification icon.
+- Optional theme toggle, if supported.
+- User avatar and account menu.
+
+The search should return relevant modules or records that the authenticated user is authorized to access.
+
+Use a compact header height.
+
+Provide accessible labels and tooltips for icon-only controls.
+
+Do not add unnecessary controls just to fill the header.
+
+---
+
+# 8. ORGANIZER DASHBOARD REDESIGN
+
+The organizer dashboard should emphasize institutional management, operational efficiency, student administration, and pending tasks.
+
+It should feel like a professional administrative workspace rather than a decorative analytics landing page.
+
+## A. Organizer Welcome Section
+
+Create a compact header.
+
+Example:
+
+**Welcome back, Test**
+
+Manage students, academic operations, fees, and institutional activities from one workspace.
+
+Display:
+
+- Actual college name.
+- Actual college code.
+- Current date.
+- Optional synchronization status.
+- Relevant quick actions.
+
+Suggested actions:
+
+- My Profile.
+- Invite Student.
+- View Pending Approvals.
+
+Keep the layout compact and practical.
+
+A manual synchronization button may exist for recovery, but ordinary updates must not require it.
+
+## B. Summary Cards
+
+Create four consistent summary cards.
+
+### Registered Students
+
+Display:
+
+- Total registered students.
+- Recently registered count, if available.
+- View Students action.
+
+### Pending Student Approvals
+
+Display:
+
+- Pending approval count.
+- Clear indication when action is required.
+- Review Applications action.
+
+### Faculty & Subjects
+
+Display:
+
+- Total faculty.
+- Total subjects.
+- Manage Faculty or Timetable action.
+
+### Fees Collected
+
+Display:
+
+- Total successfully recorded payments.
+- Number of official receipts, if available.
+- View Fee Ledger action.
+
+### Card requirements
+
+- White background.
+- Neutral border.
+- Small icon.
+- Clear label.
+- Prominent numeric value.
+- Minimal supporting text.
+- Consistent dimensions.
+- No gradient backgrounds.
+
+All statistics must be retrieved from actual records.
+
+Never hardcode sample values.
+
+Clicking a summary card must navigate to the relevant module or filtered view.
+
+## C. College Code Management
+
+Create a structured section containing two coordinated panels.
+
+### Create & Share Unique College Code
+
+Display:
+
+- College or institution name.
+- Unique college code.
+- Active status.
+- Edit action, where permitted.
+- Save Changes.
+- Copy Code.
+- Share Code.
+
+Use properly aligned form fields.
+
+Validate changes before saving.
+
+Show success or error feedback.
+
+Do not regenerate a code automatically or accidentally invalidate existing student registrations.
+
+### Primary Active Access Code
+
+Display:
+
+- Actual active code.
+- College name.
+- Active or inactive status.
+- Copy button.
+- Share button.
+- Additional actions menu, if supported.
+
+Use a monospaced font for the code.
+
+Do not expose private authentication secrets.
+
+Distinguish the institution's registration code from authentication credentials.
+
+## D. Quick Access Modules
+
+Create a compact, responsive grid containing:
+
+- Timetable & Room Planner.
+- Attendance Register.
+- Exams & Grade Cards.
+- Leave & Helpdesk Queue.
+
+Each item should contain:
+
+- Icon.
+- Module name.
+- Short description.
+- Relevant pending count or summary.
+- Clickable navigation action.
+
+Use consistent card proportions.
+
+Avoid decorative gradients and excessive colors.
+
+## E. Registered Students Management
+
+Redesign the existing student table into a professional data-management interface.
+
+### Table header
+
+Display:
+
+**All Registered Students**
+
+Include:
+
+- Total student count.
+- Pending approval count.
+- Search field.
+- Department filter.
+- Approval status filter.
+- Academic status filter.
+- Export action, if supported.
+- Register Student action, if supported.
+
+### Table columns
+
+Include:
+
+- Student name and avatar.
+- Student ID or enrollment number.
+- Email and phone.
+- Department and cohort.
+- Academic standing.
+- Portal access status.
+- Approval status.
+- Actions.
+
+Show the college code where it is useful for institutional management.
+
+### Table requirements
+
+- Clear column headings.
+- Proper alignment.
+- Consistent row heights.
+- Thin horizontal separators.
+- Readable text.
+- Subtle hover states.
+- Sorting.
+- Filtering.
+- Search.
+- Pagination.
+- Responsive behavior.
+
+Avoid compressing text into unreadable columns.
+
+Place detailed information inside a student profile page or detail drawer.
+
+### Student details
+
+When a student is selected, open a detailed view containing:
+
+- Personal information.
+- Academic details.
+- Contact information.
+- Attendance summary.
+- Fee status.
+- Approval history.
+- Relevant institutional records.
+- Authorized organizer actions.
+
+### Approval actions
+
+Provide:
+
+- View Details.
+- Approve.
+- Reject.
+
+Require confirmation for significant actions.
+
+Update the table and approval counters immediately after a successful operation.
+
+## F. Platform Activity Feed
+
+Create a clean activity panel displaying:
+
+- Activity type.
+- Description.
+- Related record.
+- Timestamp.
+- Severity, where appropriate.
+
+Use readable text and subtle status indicators.
+
+Avoid tiny fonts and excessively small scrolling panels.
+
+Provide a View All Activity action.
+
+Display an appropriate empty state when no events exist.
+
+## G. College Announcements
+
+Create a professional announcement panel.
+
+Each item should display:
+
+- Title.
+- Short description.
+- Publication date.
+- Author.
+- Audience.
+- Status.
+
+Include a Publish Announcement action.
+
+Allow authorized users to open an announcement and view its full details.
+
+Ensure published announcements appear in the correct student dashboards.
+
+---
+
+# 9. STUDENT DASHBOARD REDESIGN
+
+The student dashboard should prioritize academic progress, attendance, daily classes, financial obligations, and institutional communication.
+
+It should be visually consistent with the organizer dashboard while being simpler and less administrative.
+
+## A. Student Welcome Section
+
+Example:
+
+**Good morning, PRAV**
+
+Here is your academic overview and what needs your attention today.
+
+Display:
+
+- Actual student name.
+- Department.
+- Academic cohort or semester, where available.
+- Actual college name.
+- College code.
+- View Announcements action.
+
+Use the authenticated student's actual details.
+
+Never display another student's profile or default sample identity.
+
+## B. Institutional Membership Card
+
+Create a simple, professional membership panel.
+
+Display:
+
+- College name.
+- College code.
+- Student role.
+- Membership status.
+- Organizer approval status.
+
+Example:
+
+**Institutional Membership**
+
+COLLEGE
+
+College Code: COLL-0980
+
+Status: Approved · Active
+
+Treat the college association as read-only for ordinary students.
+
+Remove Switch College and Switch College Code actions.
+
+## C. Student Summary Cards
+
+Create four consistent cards.
+
+### Attendance
+
+Display:
+
+- Overall attendance percentage.
+- Classes attended.
+- Total classes.
+- Minimum required attendance, if configured.
+
+Use a subtle progress indicator.
+
+### College Announcements
+
+Display:
+
+- Unread announcement count.
+- Latest announcement date.
+- View Announcements action.
+
+### Outstanding Fees
+
+Display:
+
+- Outstanding balance.
+- Next due date.
+- Payment status.
+
+Clicking the card opens the fee ledger.
+
+### Academic Performance
+
+Display:
+
+- Current GPA or CGPA, if available.
+- Latest published result.
+- Semester information.
+
+If no academic result exists, show an appropriate empty state.
+
+Do not invent values.
+
+## D. Student Announcements
+
+Create a clear announcements section.
+
+Each announcement should display:
+
+- Title.
+- Short description.
+- Publication date.
+- Category.
+- Read status.
+
+Allow students to:
+
+- Open announcements.
+- Read full details.
+- View all announcements.
+- Mark them as read, if supported.
+
+Use a professional empty state when no announcements exist.
+
+## E. College and Faculty Mentor Panel
+
+Display two clearly separated sections.
+
+### Institutional Membership
+
+- College name.
+- College code.
+- Membership status.
+- Approval status.
+
+### Assigned Faculty Mentor
+
+- Mentor's actual name.
+- Department.
+- Designation, if available.
+- Next advising session.
+- View Mentor Details action.
+
+Provide a Book Mentoring Session button.
+
+Include a View Shared Notes action.
+
+Retrieve the mentor from the actual student-to-faculty assignment.
+
+Do not hardcode a mentor ID for all students.
+
+If no mentor is assigned, display a clear message.
+
+## F. Subject-Wise Attendance
+
+Create a professional attendance analytics section.
+
+Display each subject with:
+
+- Subject name.
+- Attendance percentage.
+- Classes attended.
+- Total classes.
+- Required attendance threshold, if configured.
+
+Use clean horizontal bars or a restrained bar chart.
+
+Highlight attendance below the configured threshold using a muted warning color.
+
+Do not use random colors for every subject.
+
+Do not display fake data.
+
+Clicking a subject should open its detailed attendance information when supported.
+
+## G. Today's Lecture Schedule
+
+Redesign the existing schedule preview into a clean, chronological list.
+
+Each lecture should display:
+
+- Start time.
+- End time.
+- Period number.
+- Subject code.
+- Subject name.
+- Faculty.
+- Room.
+
+### Mandatory chronological ordering
+
+The current timetable can display later periods before earlier periods.
+
+Fix this.
+
+Sort lectures by actual start time, earliest to latest.
+
+Example:
+
+**09:00–09:50 · P1**
+
+BCS201 — Cloud Computing
+
+John Sir · LH-204
+
+**10:00–10:50 · P2**
+
+CS204 — Internet of Things
+
+John · LH-204
+
+**11:00–11:50 · P4**
+
+BCS073 — Test
+
+Test · LH-204
+
+**12:00–12:50 · P5**
+
+CS901 — PC
+
+Test · LH-204
+
+These are illustrative examples from the current application. Use the actual database records.
+
+Do not invent missing periods or change the actual period numbers.
+
+Include:
+
+- View Full Timetable.
+- Current day indicator.
+- Appropriate empty state when no classes are scheduled.
+
+---
+
+# 10. PROFILE PAGE REDESIGN
+
+Create a professional, organized profile page for both students and organizers.
+
+Use the same profile component structure while respecting role-specific information and permissions.
+
+## A. Profile Header
+
+Display:
+
+- Avatar.
+- Full name.
+- Username.
+- Role.
+- Verification status.
+- Account status.
+- Department, where applicable.
+- Institution.
+- Profile completeness.
+
+Provide an Edit Profile action.
+
+## B. Profile Sections
+
+Organize information into:
+
+1. Overview.
+2. Personal Information.
+3. Academic & Role Details.
+4. Contact Information.
+5. Professional Profile.
+6. Account & Security.
+7. Preferences.
+
+Use tabs or a secondary navigation menu.
+
+Avoid crowding the page with all fields at once.
+
+## C. Profile Details
+
+Display appropriate fields such as:
+
+- Full name.
+- Email.
+- Phone.
+- Student or organizer ID.
+- Department.
+- College name.
+- College code.
+- Location.
+- Designation, where relevant.
+- Member since.
+- Account verification.
+- Security status.
+
+Use actual account data.
+
+Do not show irrelevant administrative descriptions or professional skills that were never supplied by the user.
+
+## D. Editing
+
+Provide:
+
+- Edit.
+- Save Changes.
+- Cancel.
+- Form validation.
+- Loading state.
+- Success feedback.
+- Error feedback.
+- Persistent database updates.
+
+Allow built-in avatar selection if that functionality already exists or can be integrated without breaking the existing architecture.
+
+Ensure changes remain correct after reloading.
+
+Protect institutional fields from unauthorized modification.
+
+---
+
+# 11. ACADEMIC TIMETABLE REDESIGN
+
+Create a professional timetable management experience for organizers and students.
+
+## A. Timetable Header
+
+Display:
+
+**Academic Timetable**
+
+Weekly Academic Schedule & Room Allocations
+
+Include:
+
+- Academic cohort.
+- Department.
+- Semester, where available.
+- Current week.
+- Day selector.
+- Weekly view.
+- List view.
+- Print action.
+- PDF download, if supported.
+
+## B. Timetable Layout
+
+Use a weekly grid on larger screens.
+
+On smaller screens, use a day selector and vertically stacked lecture cards.
+
+Each lecture card should display:
+
+- Subject.
+- Subject code.
+- Start time.
+- End time.
+- Period number.
+- Faculty.
+- Room.
+
+Use restrained visual accents.
+
+Avoid rainbow-colored lecture cards.
+
+## C. Correct Ordering
+
+Sort all lecture entries by start time.
+
+The order must be chronological regardless of how records were inserted into the database.
+
+Use consistent time formatting.
+
+Do not create artificial periods to fill gaps.
+
+## D. Duplicate Prevention
+
+Fix the existing problem where adding one timetable slot creates duplicate records.
+
+Requirements:
+
+- Submit the request once.
+- Disable the submit button while processing.
+- Prevent repeated submissions.
+- Validate required fields.
+- Check schedule conflicts.
+- Apply backend validation.
+- Use database constraints where appropriate.
+- Avoid duplicate records after refresh or navigation.
+
+Do not rely exclusively on frontend checks.
+
+## E. Real-Time Updates
+
+When an organizer creates, updates, or deletes a timetable slot, update the affected student timetable automatically.
+
+No manual refresh should be necessary.
+
+---
+
+# 12. STUDENT FEE LEDGER AND RECEIPTS
+
+Create a professional financial dashboard with clear calculations and reliable payment records.
+
+## A. Summary Cards
+
+Display:
+
+- Gross Assigned Fees.
+- Concessions.
+- Total Paid.
+- Accrued Late Fine.
+- Net Outstanding Due.
+
+Use actual financial records.
+
+Format amounts consistently in INR.
+
+## B. Installment Schedule
+
+Display each installment with:
+
+- Fee title.
+- Category.
+- Gross amount.
+- Concession.
+- Net payable amount.
+- Due date.
+- Amount paid.
+- Remaining balance.
+- Applicable fine.
+- Status.
+
+Use restrained status colors for:
+
+- Upcoming.
+- Due Soon.
+- Partially Paid.
+- Paid.
+- Overdue.
+- Payment Pending.
+- Payment Failed.
+
+## C. Payment Calculations
+
+Maintain consistent backend calculations.
+
+Net assigned fee equals gross assigned fee minus applicable concessions.
+
+Remaining principal equals net assigned fee minus successfully recorded payments allocated to that fee.
+
+Outstanding balance equals remaining principal plus applicable unpaid late fines.
+
+Respect institutional fine rules, payment allocations, and configured grace periods.
+
+Use consistent monetary precision.
+
+Pending or failed payments must not be treated as successful payments.
+
+Do not count the same transaction twice.
+
+## D. Payment Interface
+
+Provide a clean payment dialog or page containing:
+
+- Student details.
+- Fee assignment.
+- Amount due.
+- Previously paid amount.
+- Remaining balance.
+- Payment amount.
+- Payment method.
+- Applicable fines.
+- Final amount payable.
+
+Support the existing payment integration.
+
+If the gateway is a demo gateway, label simulated transactions clearly.
+
+After a successful payment:
+
+1. Record the transaction.
+2. Update the outstanding balance.
+3. Update the student's ledger.
+4. Update the organizer's ledger.
+5. Generate the appropriate receipt.
+6. Update payment history.
+7. Trigger configured notifications.
+8. Synchronize affected dashboards in real time.
+
+Prevent duplicate payment submissions.
+
+## E. Official Receipts
+
+Create a clean, printable receipt containing:
+
+- College name.
+- Receipt number.
+- Transaction reference.
+- Student name and ID.
+- Department.
+- Fee details.
+- Payment date and time.
+- Payment method.
+- Gross fee.
+- Concession.
+- Fine, if applicable.
+- Current payment amount.
+- Total paid to date.
+- Remaining balance.
+- Payment status.
+
+Ensure proper PDF alignment, margins, typography, and currency formatting.
+
+Prevent duplicate PDF downloads from a single click.
+
+---
+
+# 13. FACULTY MENTORING
+
+Redesign the faculty mentoring section and fix the existing workflow.
+
+Display:
+
+- Assigned mentor.
+- Upcoming sessions.
+- Session history.
+- Shared mentoring summaries.
+- Academic guidance.
+- Follow-up tasks.
+- Next meeting.
+
+Allow students to request a session using:
+
+- Purpose.
+- Description.
+- Preferred date.
+- Preferred time.
+- Meeting mode, if supported.
+
+Allow authorized faculty members to approve, reject, or reschedule requests.
+
+Use clear statuses:
+
+- Requested.
+- Approved.
+- Rescheduled.
+- Completed.
+- Rejected.
+- Cancelled.
+
+Allow faculty to publish session summaries and action items.
+
+Only show notes explicitly shared with the student.
+
+Synchronize all changes between student and faculty dashboards in real time.
+
+Use a clear empty state when no sessions exist.
+
+---
+
+# 14. LEAVE APPLICATION WORKFLOW
+
+Create a structured leave management interface.
+
+## A. Application Form
+
+Include:
+
+- Leave type.
+- Start date.
+- End date.
+- Number of days.
+- Reason.
+- Supporting document, where supported.
+- Submission date.
+
+Validate dates and required fields.
+
+Prevent accidental duplicate submissions.
+
+## B. Approval Chain
+
+Preserve the institutional workflow:
+
+Student → Faculty Mentor → HOD, when required.
+
+Apply the configured rules:
+
+- Mentor review is required.
+- HOD approval is required when leave exceeds three days.
+- HOD approval is required when leave overlaps an examination.
+
+Enforce these rules on the backend.
+
+## C. Application Tracking
+
+Display:
+
+- Application ID.
+- Leave type.
+- Start date.
+- End date.
+- Number of days.
+- Submission date.
+- Current stage.
+- Status.
+- Reviewer comments.
+
+Use a clear approval progress indicator.
+
+Allow users to open an application and view its complete history.
+
+Update the student and reviewer dashboards automatically when an application is submitted or processed.
+
+---
+
+# 15. ACADEMIC DOUBTS AND HELPDESK
+
+Redesign the helpdesk and ensure every ticket is fully clickable.
+
+## A. Ticket List
+
+Display:
+
+- Ticket ID.
+- Title.
+- Category.
+- Related subject.
+- Submission date.
+- Assigned faculty or support team.
+- Status.
+- Last updated time.
+
+## B. Ticket Detail View
+
+When a ticket is clicked, open a detail page, modal, or side panel.
+
+Display:
+
+- Complete description.
+- Attachments, if supported.
+- Submission timestamp.
+- Assigned staff.
+- Message history.
+- Replies.
+- Status changes.
+- Resolution notes.
+- Last updated time.
+
+## C. Ticket Conversation
+
+Allow authorized participants to reply.
+
+Display messages in chronological order.
+
+Show sender identity and timestamp.
+
+Support attachments where already available.
+
+Ensure that messages are stored in the correct ticket.
+
+Synchronize new replies and status changes automatically.
+
+Do not require a manual page refresh.
+
+---
+
+# 16. REAL-TIME SYNCHRONIZATION — CRITICAL REQUIREMENT
+
+The existing application has a major issue: when a student submits an approval request, the organizer often cannot see it until refreshing the page.
+
+Similar delays affect timetable updates and other modules.
+
+Fix the underlying architecture.
+
+Do not simply redesign the interface or add refresh buttons.
+
+## A. Inspect the Existing Implementation
+
+Identify:
+
+- Current state management.
+- API services.
+- Backend event delivery.
+- Database persistence.
+- Query caching.
+- Event subscriptions.
+- Cross-tab communication.
+- Authentication.
+- Institution-specific queries.
+- Error handling.
+- Duplicate requests.
+
+Determine why changes are not propagated to affected dashboards.
+
+## B. Real-Time Architecture
+
+Use the existing technology stack.
+
+Where appropriate:
+
+1. Persist the change successfully.
+2. Commit the database transaction.
+3. Publish an authorized event.
+4. Deliver it to subscribed clients.
+5. Update or invalidate the relevant frontend data.
+6. Reconcile the interface with authoritative server data.
+
+Use WebSockets or Server-Sent Events when appropriate.
+
+Use BroadcastChannel only for communication between tabs within the same browser.
+
+Do not depend on BroadcastChannel alone for cross-device updates.
+
+Implement a reasonable polling fallback if the backend cannot provide real-time events.
+
+## C. Required Real-Time Events
+
+Synchronize:
+
+- Student registration.
+- Organizer approval requests.
+- Approval and rejection decisions.
+- Timetable creation.
+- Timetable editing.
+- Timetable deletion.
+- Fee assignments.
+- Payment status changes.
+- Receipt creation.
+- Mentoring requests.
+- Mentoring decisions.
+- Shared mentoring notes.
+- Leave applications.
+- Mentor and HOD decisions.
+- New announcements.
+- Helpdesk tickets.
+- Helpdesk replies.
+- Ticket resolution.
+
+## D. Connection Reliability
+
+Implement:
+
+- Automatic reconnection.
+- Subscription cleanup.
+- Event deduplication.
+- Appropriate event ordering.
+- Handling of missed events.
+- State reconciliation after reconnecting.
+- Safe fallback behavior.
+
+Do not allow a real-time event to create duplicate database records.
+
+## E. Security and Isolation
+
+Enforce permissions on the backend.
+
+Students should receive only their own records and authorized institutional announcements.
+
+Organizers should receive records belonging to their institution.
+
+Faculty should receive only the information permitted by their role and assignments.
+
+Do not expose private information through unrestricted real-time subscriptions.
+
+Do not use local storage as the sole source of truth for shared institutional data.
+
+**A successful update in one browser must appear automatically in all authorized affected browser sessions without a manual refresh.**
+
+---
+
+# 17. EMPTY, LOADING, SUCCESS, AND ERROR STATES
+
+Every module must handle all common states professionally.
+
+### Loading
+
+Use subtle skeletons or loading indicators.
+
+### Empty
+
+Provide a clear explanation and an appropriate next action.
+
+Examples:
+
+- No fee installments assigned.
+- No mentoring sessions scheduled.
+- No leave applications submitted.
+- No announcements published.
+- No helpdesk tickets found.
+
+### Success
+
+Show a concise confirmation after the server confirms a successful operation.
+
+### Error
+
+Display a useful error message and recovery option.
+
+### Pending
+
+Clearly indicate when an operation is processing.
+
+Disable duplicate submissions until the request completes.
+
+Do not display false success messages.
+
+---
+
+# 18. RESPONSIVE DESIGN AND ACCESSIBILITY
+
+Support:
+
+- Large desktop monitors.
+- Standard desktop screens.
+- Laptops.
+- Tablets.
+- Mobile devices.
+
+Use responsive CSS grid and flexbox.
+
+On mobile:
+
+- Collapse the sidebar.
+- Stack cards.
+- Keep forms readable.
+- Use mobile-friendly table alternatives.
+- Maintain touch-friendly controls.
+- Prevent horizontal overflow.
+
+Accessibility requirements:
+
+- Keyboard navigation.
+- Visible focus indicators.
+- Accessible labels.
+- Sufficient text contrast.
+- Appropriate semantic HTML.
+- Reduced-motion support.
+- Accessible dialog behavior.
+
+Do not sacrifice readability for visual compactness.
+
+---
+
+# 19. TECHNICAL AND DATA INTEGRITY REQUIREMENTS
+
+Before making changes, inspect the existing frontend, backend, database, and real-time infrastructure.
+
+Preserve existing technologies wherever possible.
+
+Do not rewrite the entire application unnecessarily.
+
+Review:
+
+- Database relationships.
+- API endpoints.
+- Authentication.
+- Role-based permissions.
+- State management.
+- Existing UI components.
+- Real-time subscriptions.
+- Payment workflows.
+- PDF generation.
+- Timetable logic.
+
+Where necessary, fix:
+
+- Duplicate database records.
+- Repeated API requests.
+- Missing unique constraints.
+- Inconsistent payment statuses.
+- Stale frontend queries.
+- Incorrect institution filters.
+- Invalid account associations.
+- Missing authorization checks.
+- Incorrect timetable sorting.
+- Duplicate event processing.
+
+Use server-side validation and database constraints wherever appropriate.
+
+Do not create fake production data to populate empty dashboards.
+
+Do not hardcode user names, student IDs, faculty identities, college codes, fee values, or academic results.
+
+---
+
+# 20. TESTING REQUIREMENTS
+
+After implementing the redesign, test both roles independently.
+
+## Organizer Tests
+
+- Dashboard loads actual organizer information.
+- College name and code are correct.
+- Registered student counts are accurate.
+- Pending approvals appear automatically.
+- Approval and rejection actions work.
+- Student details open correctly.
+- Timetable slots are not duplicated.
+- Fee totals reflect actual recorded payments.
+- Announcements publish correctly.
+- Activity records display correctly.
+
+## Student Tests
+
+- Dashboard displays the authenticated student's actual information.
+- College-switching controls are absent.
+- Membership information is correct.
+- Attendance values are accurate.
+- Timetable is sorted chronologically.
+- Fee balances and receipts are consistent.
+- Mentoring requests work.
+- Leave applications work.
+- Helpdesk tickets open completely.
+- Announcement updates appear automatically.
+
+## Cross-Browser Tests
+
+Use separate sessions:
+
+- Browser A: Organizer.
+- Browser B: Student.
+- Browser C: Faculty.
+
+Submit a request from one account.
+
+Verify that the authorized recipient sees it without refreshing.
+
+Approve or reject the request.
+
+Verify that the originating account receives the updated status automatically.
+
+Repeat this for timetable updates, fee assignments, mentoring, leave applications, announcements, and helpdesk messages.
+
+## Regression Tests
+
+Ensure that existing registration, authentication, institutional access, and other working modules remain functional.
+
+Fix any regressions before completion.
+
+---
+
+# 21. IMPLEMENTATION ORDER
+
+Complete the work in the following sequence.
+
+### Phase 1: Architecture Inspection
+
+Understand the existing application, routes, components, API services, database, and real-time system.
+
+### Phase 2: Shared Design System
+
+Implement the color palette, typography, spacing, sidebar, header, cards, buttons, tables, and form components.
+
+### Phase 3: Organizer Dashboard
+
+Redesign the organizer navigation, welcome section, summary cards, college code management, student table, activity feed, and announcements.
+
+### Phase 4: Student Dashboard
+
+Redesign the student navigation, welcome section, membership card, summary cards, announcements, mentor panel, attendance analytics, and timetable preview.
+
+### Phase 5: Internal Modules
+
+Apply the design system to:
+
+- Profile.
+- Timetable.
+- Attendance.
+- Exams.
+- Fee ledger.
+- Receipts.
+- Faculty mentoring.
+- Leave applications.
+- Announcements.
+- Helpdesk.
+
+### Phase 6: Functional Fixes
+
+Fix duplicate timetable records, payment inconsistencies, profile data issues, and broken workflows.
+
+### Phase 7: Real-Time Synchronization
+
+Fix backend event delivery, frontend subscriptions, query invalidation, reconnection, and cross-browser synchronization.
+
+### Phase 8: Testing
+
+Run the application, test the affected workflows, verify responsiveness, and fix regressions.
+
+---
+
+# 22. FINAL DESIGN AND DELIVERY STANDARD
+
+The final product must look like a professionally designed college management platform suitable for real institutional use.
+
+The organizer dashboard should prioritize operational control, student management, pending approvals, and institutional administration.
+
+The student dashboard should prioritize academic progress, attendance, today's timetable, fees, announcements, and mentoring.
+
+Both dashboards must share a consistent design system without looking identical.
+
+### Final visual requirements
+
+- White and light-gray surfaces.
+- Deep navy primary actions.
+- Charcoal typography.
+- Restrained status colors.
+- Consistent alignment.
+- Clear spacing.
+- Readable data tables.
+- Professional typography.
+- Minimal shadows.
+- No purple gradients.
+- No neon colors.
+- No excessive decoration.
+- No generic AI-generated dashboard appearance.
+
+### Final functional requirements
+
+- Existing backend preserved where possible.
+- Real user data displayed correctly.
+- Student and organizer permissions maintained.
+- No duplicate timetable entries.
+- Correct fee calculations.
+- Consistent payment statuses.
+- Properly aligned PDF receipts.
+- Functional mentoring.
+- Functional leave workflow.
+- Complete helpdesk ticket details.
+- Real-time updates across separate browser sessions.
+- Responsive design.
+- All visible actions functional.
+
+**FINAL INSTRUCTION: Inspect the existing codebase and implement the complete redesign directly. Do not stop at mockups, screenshots, or a proposed plan. Preserve working features, fix the underlying functional issues, run the application, test both dashboards, and report the actual changes and any remaining limitations.**

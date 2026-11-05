@@ -1,0 +1,37 @@
+{
+  "id": "/",
+  "name": "Campus Portal — Role-Based College Management System",
+  "short_name": "CampusPortal",
+  "description": "One secure place where students, parents, faculty, HODs, accounts officers, and college administration handle attendance, results, fees, notices, mentoring, and leave.",
+  "theme_color": "#0E1A2B",
+  "background_color": "#F6F4EF",
+  "display": "standalone",
+  "start_url": "/",
+  "scope": "/",
+  "icons": [
+    {
+      "src": "/pwa-192x192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "/pwa-512x512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "/pwa-maskable-512x512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "maskable"
+    },
+    {
+      "src": "/icon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any"
+    }
+  ]
+}

@@ -1,0 +1,6 @@
+{
+  "name": "Campus Portal — Role-Based College Management System",
+  "description": "One secure place where students, parents, faculty, HODs, accounts officers, and college administration handle attendance, results, fees, notices, mentoring, and leave with strict row-level security.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}

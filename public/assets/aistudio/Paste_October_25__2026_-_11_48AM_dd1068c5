@@ -1,0 +1,1159 @@
+# COLLEGE PORTAL — COMPLETE BUG FIXING, FEE MANAGEMENT, TIMETABLE, AND STUDENT PANEL IMPROVEMENTS
+
+## OBJECTIVE
+
+Perform a complete inspection, debugging, and correction of the existing College Portal application.
+
+Several modules currently have duplicate records, incorrect fee displays, poorly formatted PDF receipts, and non-functional leave applications. The student fee payment interface also needs to be improved with a complete demonstration payment gateway.
+
+**Your primary responsibility is to FIX the existing implementation, not create a separate application or rebuild the entire project from scratch.**
+
+Inspect the existing frontend, backend, database schema, API endpoints, authentication, and state management before making changes.
+
+Preserve the existing design system, navigation, user roles, database relationships, and all correctly functioning features.
+
+Implement the following fixes completely, ensuring that the changes work across the frontend, backend, and database.
+
+---
+
+# 1. TIMETABLE CREATION — FIX DUPLICATE SLOTS
+
+## Current Problem
+
+When an organizer creates a timetable and clicks the "Add Slot" button, duplicate timetable slots appear.
+
+The same slot may be added multiple times, resulting in duplicate subjects, periods, faculty assignments, classrooms, or timetable entries.
+
+## Required Fixes
+
+### A. Correct the Add Slot Functionality
+
+- Fix the "Add Slot" button so that each click adds exactly one new, empty timetable slot.
+- Prevent accidental multiple insertions caused by repeated event handlers, duplicate API requests, incorrect React state updates, or repeated form submissions.
+- Ensure that adding a slot does not duplicate previously entered slots.
+- Preserve all existing timetable entries when adding another slot.
+- Ensure each new slot has a unique temporary frontend identifier.
+- Do not use array indexes as the only identifiers for dynamically created slots.
+- Ensure that editing or deleting one slot does not affect other slots.
+
+### B. Prevent Duplicate Timetable Entries
+
+Implement proper validation before saving the timetable.
+
+Check for conflicts involving:
+
+- The same class or section.
+- The same day and time period.
+- The same faculty member assigned to overlapping periods.
+- The same classroom assigned to overlapping periods.
+- Duplicate subject assignments.
+- Overlapping start and end times.
+- Duplicate records submitted through repeated API requests.
+
+Apply conflict validation according to the college's timetable rules.
+
+For example, a faculty member must not be assigned to two different classes at the same time.
+
+Likewise, a classroom must not be allocated to multiple classes during overlapping periods.
+
+Do not incorrectly reject legitimate entries merely because they share the same subject, faculty member, or classroom on different days or during different periods.
+
+### C. Frontend and Backend Validation
+
+Implement validation at both levels.
+
+Frontend:
+- Display clear validation messages.
+- Highlight conflicting timetable slots.
+- Prevent accidental duplicate submissions.
+- Disable the Save button while a save request is in progress.
+- Show a success message after saving.
+
+Backend:
+- Validate timetable conflicts before inserting records.
+- Use database constraints where appropriate.
+- Prevent duplicate records when the same request is submitted more than once.
+- Return meaningful validation errors instead of silently creating duplicate entries.
+
+Use database transactions where multiple timetable records must be saved together.
+
+### D. Expected Result
+
+Clicking "Add Slot" once must add exactly one blank slot.
+
+Saving the timetable must persist only valid, unique entries.
+
+Existing timetable records must remain unchanged unless the organizer explicitly edits or deletes them.
+
+---
+
+# 2. RECORD FEE PAYMENT & ISSUE RECEIPT — REMOVE DUPLICATE OPTIONS
+
+## Current Problem
+
+In the organizer's fee management module, the section titled:
+
+"3. Record Fee Payment & Issue Receipt"
+
+displays duplicate options when selecting students, fee structures, payment categories, or other available selections.
+
+This makes it difficult to identify the correct student or fee record.
+
+## Required Fixes
+
+### A. Remove Duplicate Dropdown Options
+
+Inspect every dropdown, searchable selection, autocomplete field, and student selector in the fee payment form.
+
+Check for duplicates in:
+
+- Student names.
+- Student registration numbers.
+- Student IDs.
+- Fee structures.
+- Fee categories.
+- Academic years.
+- Semesters.
+- Installments.
+- Payment methods.
+- Existing fee assignments.
+- Outstanding fee records.
+
+Ensure that each actual entity appears only once in the appropriate selection list.
+
+Do not simply hide duplicate-looking labels if they represent different database records. Identify the underlying data problem and correct it.
+
+### B. Correct the Data Loading Process
+
+Investigate possible causes, including:
+
+- Duplicate API requests.
+- Incorrect React `useEffect` dependencies.
+- Multiple event listeners.
+- Repeated state updates.
+- Appending API results without deduplication.
+- Incorrect database joins.
+- Duplicate database records.
+- Mixing student IDs, user IDs, and registration IDs.
+- Fetching both assigned fees and fee structures without correctly distinguishing them.
+
+Use stable database identifiers to identify records.
+
+Where appropriate, use database-level filtering and deduplication rather than relying exclusively on frontend filtering.
+
+### C. Improve Student Selection
+
+When an organizer selects a student, display the correct details:
+
+- Student name.
+- Registration or admission number.
+- Department.
+- Course.
+- Class or section.
+- Academic year.
+- Assigned fee structure.
+- Total applicable fees.
+- Amount already paid.
+- Outstanding balance.
+- Applicable fines.
+- Available installments.
+
+Ensure all details belong to the selected student.
+
+### D. Expected Result
+
+Every student and fee option must appear only once.
+
+Selecting a student must load the correct fee details without duplicates or incorrect amounts.
+
+---
+
+# 3. ISSUED FEE RECEIPTS — PROFESSIONAL PDF GENERATION
+
+## Current Problem
+
+The PDF receipts downloaded from the "Issued Fee Receipts" section are poorly aligned.
+
+The receipt layout does not present the fee breakdown, payment details, outstanding balance, and transaction references in a sufficiently clear and professional format.
+
+## Required Fixes
+
+Generate a professional, print-ready PDF receipt with consistent spacing, alignment, typography, and page margins.
+
+Do not generate a PDF by simply printing the current dashboard or screenshotting the browser interface.
+
+Generate the receipt from the actual payment and fee records stored in the backend.
+
+## A. Receipt Header
+
+Include:
+
+- College name.
+- College logo, if available.
+- College address.
+- Contact details, if available.
+- Receipt title.
+- Unique receipt number.
+- Receipt issue date and time.
+- Academic year.
+- Payment status.
+
+Use the institution's existing information. Do not invent official college details.
+
+## B. Student Information
+
+Display:
+
+- Student name.
+- Student registration number.
+- Student ID, if applicable.
+- Course and department.
+- Class or section.
+- Semester.
+- Academic year.
+
+Use a clean, properly aligned information section.
+
+## C. Detailed Fee Breakdown
+
+Show the actual fee components applicable to the student's assigned fee structure.
+
+For example:
+
+| Fee Component | Amount |
+|---|---:|
+| Tuition Fee | ₹25,000 |
+| Examination Fee | ₹2,000 |
+| Laboratory Fee | ₹3,000 |
+| Library Fee | ₹1,000 |
+| Other Applicable Fees | ₹500 |
+| Gross Fee | ₹31,500 |
+| Scholarship or Approved Concession | ₹2,000 |
+| Fine or Late Fee | ₹500 |
+| Total Payable | ₹30,000 |
+
+The above amounts are illustrative only. Always calculate and display actual amounts from the database.
+
+Include only the fee categories applicable to the selected student.
+
+Clearly distinguish between the original fee amount, approved concessions, fines, previous payments, current payment, and remaining balance.
+
+## D. Payment Summary
+
+Include the following fields wherever applicable:
+
+- Gross fee amount.
+- Total approved concessions.
+- Total fines.
+- Previous payments.
+- Current payment amount.
+- Outstanding balance before payment.
+- Outstanding balance after payment.
+- Installment number.
+- Installment amount.
+- Payment date.
+- Payment time.
+- Payment method.
+- Payment status.
+
+Use correct financial calculations.
+
+For example:
+
+**Remaining Balance = Total Applicable Charges − Total Approved Concessions − Total Successful Payments**
+
+Where total applicable charges include the applicable fines.
+
+Do not subtract a payment more than once.
+
+Do not include failed, cancelled, or pending payments in the total of successful payments.
+
+Do not treat an unapproved scholarship or concession as a confirmed deduction.
+
+If the institution has a more specific fee-accounting policy, follow that policy consistently.
+
+## E. Unique Receipt Number and Transaction Reference
+
+Every issued receipt must have a unique receipt number.
+
+Generate a unique transaction reference for each payment record.
+
+For example:
+
+- Receipt Number: `FEE-2026-000123`
+- Transaction Reference: `TXN-20261025-A81F92`
+
+These are illustrative formats only.
+
+Requirements:
+
+1. Receipt numbers must not be duplicated.
+2. Transaction references must not be duplicated.
+3. References must be generated and validated by the backend.
+4. Use database uniqueness constraints.
+5. Preserve the original receipt number when downloading the same receipt again.
+6. Do not generate a new receipt number each time a PDF is downloaded.
+7. Prevent concurrent payment requests from creating duplicate receipts.
+8. Clearly distinguish the internal transaction reference from an external payment gateway transaction ID.
+
+For demonstration payments, generate a simulated gateway reference and clearly label it as a demo transaction.
+
+Never represent a simulated transaction as a real bank transaction.
+
+## F. PDF Layout Requirements
+
+The generated PDF must:
+
+- Use A4 paper size unless an existing receipt format requires otherwise.
+- Have balanced page margins.
+- Use consistent font sizes.
+- Align all monetary values correctly.
+- Display currency amounts in INR.
+- Format numbers consistently using Indian currency notation where appropriate.
+- Prevent overlapping text.
+- Prevent clipped or truncated content.
+- Use clear section headings.
+- Include subtle borders and separators.
+- Keep tables aligned.
+- Support long student names and long course names.
+- Handle large fee breakdowns without cutting off rows.
+- Include page numbering if multiple pages are required.
+- Show a payment confirmation statement.
+- Include an authorized signature section if appropriate.
+- Include a footer identifying the document as an official receipt generated by the application.
+
+Display the receipt as paid only when the underlying payment status is successful.
+
+For pending, failed, refunded, or cancelled transactions, display the correct status and follow the institution's receipt policy.
+
+### G. Download Behaviour
+
+When the organizer clicks "Download PDF":
+
+1. Retrieve the selected receipt's actual data.
+2. Generate the PDF using the correct receipt identifier.
+3. Preserve the existing receipt number and transaction reference.
+4. Download the complete PDF.
+5. Ensure the downloaded document matches the payment record shown on screen.
+
+Also provide a print option where appropriate.
+
+### Expected Result
+
+Every receipt must be professional, readable, correctly aligned, and suitable for printing or sharing with students.
+
+---
+
+# 4. STUDENT PANEL — FIX DUPLICATE INSTALLMENT SCHEDULES AND FINES
+
+## Current Problem
+
+The student panel displays the following sections more than once:
+
+- Fee Installment Schedule.
+- Fine Breakdown.
+
+Some amounts or installment numbers are also duplicated.
+
+This creates confusion about the student's actual fee obligations.
+
+## Required Fixes
+
+### A. Eliminate Duplicate Sections
+
+Inspect the student fee dashboard and identify why these sections are rendered twice.
+
+Check:
+
+- Duplicate React components.
+- Duplicate component imports or placements.
+- Repeated API calls.
+- Incorrect state merging.
+- Multiple database queries returning overlapping records.
+- Incorrect relationships between fee assignments and installments.
+- Repeated fine records.
+- Duplicate fee calculations.
+
+Render each intended section only once.
+
+Do not remove legitimate installments or distinct fines simply because they have similar amounts.
+
+### B. Correct Installment Numbering
+
+Installments must be displayed using their actual installment identifiers or sequence numbers.
+
+Example:
+
+| Installment | Due Date | Amount | Paid | Balance | Status |
+|---|---|---:|---:|---:|---|
+| Installment 1 | 10 Jun 2026 | ₹10,000 | ₹10,000 | ₹0 | Paid |
+| Installment 2 | 10 Sep 2026 | ₹10,000 | ₹5,000 | ₹5,000 | Partially Paid |
+| Installment 3 | 10 Dec 2026 | ₹10,000 | ₹0 | ₹10,000 | Upcoming |
+
+These are illustrative amounts and dates.
+
+Do not duplicate installment numbers because of repeated joins or frontend rendering.
+
+### C. Correct Fine Breakdown
+
+Display each applicable fine only once.
+
+Include:
+
+- Fine description.
+- Fine date.
+- Reason.
+- Applicable amount.
+- Waived amount, if applicable.
+- Remaining amount.
+- Payment status.
+
+Do not create duplicate fines when a student refreshes the page or opens the dashboard again.
+
+Fine calculations must reflect the institution's actual fee rules.
+
+### D. Correct Financial Summary
+
+Display the following summary cards:
+
+- Total Fees.
+- Approved Concessions.
+- Total Fines.
+- Total Paid.
+- Outstanding Balance.
+- Next Installment Due.
+- Payment Status.
+
+Ensure the figures are calculated consistently from the underlying fee records.
+
+### Expected Result
+
+Each fee section appears once, installment numbers are correct, and all amounts reflect actual student records.
+
+---
+
+# 5. STUDENT PANEL — COMPLETE FEE PAYMENT INTERFACE WITH DEMO PAYMENT GATEWAY
+
+## Objective
+
+Create a complete fee payment experience directly inside the student's panel.
+
+Students must be able to review their fee obligations, select an eligible installment or amount, complete a simulated payment, view the transaction details, and download a properly formatted receipt.
+
+**This is a demonstration payment gateway. Do not process real money or collect real payment credentials.**
+
+## A. Student Fee Payment Dashboard
+
+Add a clearly visible "Pay Fees" button in the student fee section.
+
+When the student opens it, show a well-organized payment interface containing:
+
+### Student Information
+
+- Student name.
+- Registration number.
+- Course.
+- Department.
+- Semester.
+- Academic year.
+
+### Fee Summary
+
+- Total assigned fees.
+- Total approved concessions.
+- Total applicable fines.
+- Previous successful payments.
+- Current outstanding balance.
+- Selected installment.
+- Selected payment amount.
+- Remaining balance after payment.
+
+Retrieve these values from the backend.
+
+Do not allow students to modify official fee structures, approved concessions, or their recorded payment history.
+
+## B. Installment Selection
+
+Display all eligible installments with:
+
+- Installment number.
+- Due date.
+- Original amount.
+- Amount already paid.
+- Remaining amount.
+- Applicable fine.
+- Status.
+
+Allow students to select an eligible installment for payment.
+
+Support partial payments only if the existing fee rules permit them.
+
+Prevent:
+
+- Paying an already fully paid installment again.
+- Paying more than the permitted outstanding amount.
+- Submitting a negative amount.
+- Submitting zero or invalid amounts.
+- Paying another student's fees.
+- Making duplicate payments through repeated clicks.
+- Paying an amount inconsistent with the server's fee calculation.
+
+If partial payments are not supported by the current system, do not introduce them without implementing the corresponding backend and accounting rules.
+
+## C. Payment Breakdown Before Confirmation
+
+Before the payment begins, display a confirmation screen.
+
+Example:
+
+**Fee Payment Summary**
+
+| Description | Amount |
+|---|---:|
+| Selected Installment | ₹10,000 |
+| Applicable Fine | ₹200 |
+| Approved Concession | ₹0 |
+| Previous Payments | ₹0 |
+| Amount Due Before Payment | ₹10,200 |
+| Payment Amount | ₹10,200 |
+| Remaining Balance After Payment | ₹0 |
+
+All amounts are illustrative.
+
+Make it clear whether the figures represent the selected installment or the student's overall fee balance.
+
+Avoid mixing the total college fee with the amount due for a single installment.
+
+## D. Demo Payment Gateway
+
+Implement a realistic simulated payment flow.
+
+The gateway should include:
+
+- Payment summary.
+- Payment amount.
+- Simulated payment reference.
+- Payment method selection.
+- Payment processing screen.
+- Success screen.
+- Failure screen.
+- Cancellation flow.
+- Transaction history.
+- Download receipt button.
+
+Support simulated payment methods such as:
+
+- UPI Demo.
+- Debit Card Demo.
+- Credit Card Demo.
+- Net Banking Demo.
+
+Clearly label all methods as **DEMO ONLY**.
+
+Do not request actual bank credentials, real card details, card security codes, UPI PINs, banking passwords, or OTPs.
+
+Instead, provide safe simulated inputs or predefined test outcomes.
+
+For example:
+
+- Demo Success: Simulates a successful payment.
+- Demo Failure: Simulates a declined payment.
+- Demo Cancel: Cancels the payment before completion.
+
+These outcomes must be controlled by the application's test configuration and handled consistently by the backend.
+
+### Important Payment Rules
+
+1. Never mark a payment successful merely because the user clicks a button.
+2. Validate the payment request on the backend.
+3. Create a unique payment attempt identifier.
+4. Use idempotency controls to prevent duplicate successful payments.
+5. Update installment balances only after the simulated payment succeeds.
+6. Keep failed and cancelled attempts in the transaction history where appropriate.
+7. Do not subtract failed or cancelled transactions from the outstanding balance.
+8. Generate the final receipt only after successful payment.
+9. Prevent unauthorized access to other students' payment records.
+10. Record payment timestamps using a consistent backend time standard and display them in the appropriate local timezone.
+
+Use the application's existing authentication and authorization mechanisms.
+
+## E. Payment Processing Screen
+
+After confirmation, display a clear processing indicator.
+
+Prevent the student from submitting the same payment multiple times while the request is in progress.
+
+Handle API timeouts and retries safely.
+
+If the result is uncertain because of a network interruption, check the existing payment attempt's status before allowing another payment attempt.
+
+Do not create a second successful payment simply because the student refreshes the page.
+
+## F. Payment Success Screen
+
+After a successful simulated payment, display:
+
+- Payment successful message.
+- Student name.
+- Receipt number.
+- Transaction reference.
+- Simulated gateway reference.
+- Payment method.
+- Amount paid.
+- Payment date.
+- Payment time.
+- Installment paid.
+- Previous outstanding balance.
+- Remaining balance.
+- Updated installment status.
+
+Provide the following actions:
+
+- Download Receipt PDF.
+- Print Receipt.
+- View Transaction Details.
+- Return to Student Dashboard.
+
+The receipt must use the same professional PDF layout described in Section 3.
+
+## G. Student Payment History
+
+Add a transaction history table.
+
+Include:
+
+| Field | Description |
+|---|---|
+| Date and Time | Payment attempt timestamp |
+| Receipt Number | Unique receipt number, when issued |
+| Transaction Reference | Unique internal reference |
+| Installment | Applicable installment |
+| Amount | Amount attempted or paid |
+| Payment Method | Selected demo method |
+| Status | Success, Failed, Pending, or Cancelled |
+| Action | View Details or Download Receipt |
+
+Use accurate status labels.
+
+A failed or cancelled attempt must never appear as a successful payment.
+
+Do not generate receipts for unsuccessful transactions unless an existing policy explicitly requires a separate non-payment record.
+
+## H. Backend and Database Integration
+
+Persist successful demo payments in the same fee ledger used by the organizer's fee management module.
+
+Use the existing data model wherever possible.
+
+The backend must be the authoritative source for:
+
+- Payment status.
+- Payment amount.
+- Receipt number.
+- Transaction reference.
+- Outstanding balance.
+- Installment status.
+- Payment date and time.
+
+Use database transactions to ensure that payment records, fee ledger entries, installment balances, and receipt records remain consistent.
+
+If the current application already has a payment or receipt model, extend it rather than creating a second competing payment system.
+
+### Expected Result
+
+Students can pay eligible fees through a safe simulated gateway, see accurate payment details, and download receipts.
+
+The organizer must see the same successful transactions in the institutional fee ledger.
+
+The student's payment history, outstanding balance, installment status, and receipt must all agree.
+
+---
+
+# 6. STUDENT LEAVE APPLICATION — FIX SUBMISSION AND REAL-TIME ORGANIZER UPDATES
+
+## Current Problem
+
+The leave application functionality in the student panel is not working correctly.
+
+Students may be unable to submit leave requests, and submitted applications do not reliably appear in the organizer's dashboard in real time.
+
+## Required Fixes
+
+### A. Complete Leave Application Form
+
+Create or repair the leave application form with the following fields:
+
+- Student name, populated from the authenticated student account.
+- Student registration number, populated from the student's account.
+- Department.
+- Course and class or section.
+- Leave type.
+- Start date.
+- End date.
+- Number of leave days.
+- Reason for leave.
+- Supporting document upload, if supported.
+- Submission date and time.
+- Application status.
+
+Possible leave types:
+
+- Sick Leave.
+- Casual Leave.
+- Emergency Leave.
+- Personal Leave.
+- Other.
+
+Students must not be able to submit an application on behalf of another student by modifying the request payload.
+
+### B. Form Validation
+
+Validate:
+
+- Required fields.
+- Valid date formats.
+- Start date not later than end date.
+- Permitted leave date range.
+- Reason length.
+- Allowed leave types.
+- File type and size, if attachments are supported.
+
+Calculate the number of leave days correctly according to the institution's existing rules.
+
+If holidays and weekends are excluded, use the institution's configured calendar.
+
+Do not assume that all leave types follow the same day-counting policy.
+
+Display clear validation errors beside the relevant fields.
+
+Prevent duplicate submissions while a request is being processed.
+
+### C. Backend API
+
+Inspect the existing leave application API.
+
+Fix any incorrect:
+
+- Endpoint URLs.
+- HTTP methods.
+- Request payloads.
+- Authentication headers.
+- Database insertions.
+- Response formats.
+- Error handling.
+- Student-to-application relationships.
+
+If an endpoint is missing, implement it using the application's existing backend architecture.
+
+Persist each valid application in the database.
+
+Return the saved application, including its unique application ID and current status.
+
+Do not treat a frontend success notification as proof that the application was saved.
+
+### D. Leave Application Status
+
+Support the following statuses, where applicable:
+
+- Pending.
+- Approved.
+- Rejected.
+- Cancelled.
+
+A newly submitted application must initially have the correct pending status unless the institution's existing workflow specifies otherwise.
+
+The organizer must be able to open an application and review the submitted details.
+
+Authorized organizers must be able to approve or reject requests and optionally provide remarks.
+
+Record status changes and their timestamps.
+
+Do not allow students to change their own application status to Approved or Rejected.
+
+### E. Real-Time Organizer Dashboard Updates
+
+When a student submits a leave application, the organizer's dashboard must update automatically.
+
+Use the application's existing real-time infrastructure if available.
+
+Preferred approach:
+
+1. Use Server-Sent Events or WebSockets if the application already supports them.
+2. Otherwise, implement a reliable polling fallback with sensible intervals.
+3. Ensure the solution works across different browsers, devices, and authenticated sessions.
+
+Do not rely solely on React state, local component events, or BroadcastChannel to synchronize separate devices or users.
+
+The backend and database must remain the shared source of truth.
+
+When a new leave application is submitted:
+
+- Update the pending application count.
+- Add the application to the organizer's leave application list.
+- Display the correct student details.
+- Display the leave dates and reason.
+- Show the submission timestamp.
+- Update the dashboard without requiring a manual page refresh.
+
+If real-time delivery temporarily fails, the application must recover through reconnection or polling.
+
+Avoid creating duplicate applications or duplicate dashboard rows when real-time events are delivered more than once.
+
+### F. Student Leave History
+
+Add or repair a leave application history section in the student panel.
+
+Display:
+
+- Application ID.
+- Leave type.
+- Start date.
+- End date.
+- Number of days.
+- Reason.
+- Submission date.
+- Current status.
+- Organizer remarks, if any.
+
+Allow students to open an application and view its details.
+
+Allow cancellation of pending requests only if permitted by the existing institutional rules.
+
+When the organizer changes an application's status, update the student's view automatically or refresh it reliably.
+
+### Expected Result
+
+A student can submit a leave application successfully.
+
+The application is saved in the database and appears in the organizer's dashboard in real time or through the configured reliable fallback.
+
+The organizer can approve or reject it, and the student can see the updated status.
+
+---
+
+# 7. SINGLE SOURCE OF TRUTH FOR FEES AND PAYMENTS
+
+This requirement applies to the entire College Portal.
+
+The organizer's fee ledger and the student's fee dashboard must use the same underlying fee assignments, payment records, installment records, fines, concessions, and receipt references.
+
+Do not maintain separate, inconsistent calculations for the student and organizer interfaces.
+
+Implement reusable backend services or shared calculation logic for:
+
+- Total applicable fees.
+- Approved concessions.
+- Applicable fines.
+- Successful payments.
+- Installment balances.
+- Outstanding balances.
+- Payment status.
+- Receipt generation.
+
+Use database queries and transactional updates that preserve the consistency of the fee ledger.
+
+The frontend may display calculated values, but it must not be the authority for financial records.
+
+Whenever a successful payment is recorded:
+
+1. Update the authoritative payment ledger.
+2. Update the applicable installment balance.
+3. Update the student's outstanding balance.
+4. Create the receipt record.
+5. Make the updated transaction visible to the organizer.
+6. Refresh or update the student dashboard.
+7. Ensure subsequent downloads use the same saved receipt.
+
+All updates must remain consistent, including after page refreshes or login from another browser.
+
+---
+
+# 8. DATABASE CLEANUP AND DUPLICATE PREVENTION
+
+Inspect the database for existing duplicate records related to:
+
+- Timetable slots.
+- Student fee assignments.
+- Installment schedules.
+- Fine records.
+- Payment transactions.
+- Receipt numbers.
+- Leave applications.
+
+Identify the root cause before attempting to remove duplicate data.
+
+Do not automatically delete records merely because they look similar.
+
+Two records may represent legitimate separate installments, payments, or leave applications.
+
+Before making database cleanup changes:
+
+1. Identify affected records.
+2. Determine which records are genuinely duplicates.
+3. Preserve legitimate transaction history.
+4. Check foreign-key relationships.
+5. Create a backup or use the application's supported migration and recovery procedure.
+6. Apply corrective migrations or carefully controlled cleanup scripts.
+7. Verify that existing student accounts and fee histories remain intact.
+
+Add appropriate uniqueness constraints, indexes, and validation rules where necessary.
+
+Consider unique identifiers and business keys for:
+
+- Receipt numbers.
+- Transaction references.
+- Payment attempt identifiers.
+- Idempotency keys.
+- Timetable slot identities.
+- Other entities that must be unique under the institution's rules.
+
+Do not introduce overly restrictive uniqueness constraints that prevent legitimate records.
+
+---
+
+# 9. USER INTERFACE AND DESIGN QUALITY
+
+Maintain the existing College Portal design and improve the affected screens where necessary.
+
+The interface must be professional, clean, responsive, and easy to use.
+
+Apply these improvements:
+
+- Consistent typography.
+- Proper spacing.
+- Clearly structured cards.
+- Readable tables.
+- Aligned currency values.
+- Searchable student selectors where appropriate.
+- Clear loading indicators.
+- Meaningful empty states.
+- Clear validation messages.
+- Success and failure notifications.
+- Confirmation dialogs for important actions.
+- Responsive layouts for desktop, tablet, and mobile.
+- Accessible form labels.
+- Clear payment statuses.
+- Consistent date and currency formatting.
+
+Avoid unnecessary redesigns of unrelated modules.
+
+Do not add duplicate dashboard cards, duplicate fee sections, or repeated information.
+
+Ensure that all buttons and actions work correctly rather than merely looking functional.
+
+---
+
+# 10. SECURITY AND AUTHORIZATION
+
+Review all affected endpoints and enforce role-based access.
+
+### Student Role
+
+Students may:
+
+- View their own fee information.
+- View their own installments and fines.
+- Initiate permitted demo payments.
+- View their own payment history.
+- Download their own receipts.
+- Submit leave applications.
+- View their own leave history.
+
+Students must not be able to:
+
+- View another student's private financial records.
+- Modify official fee assignments.
+- Change recorded payment amounts.
+- Forge receipt numbers.
+- Mark payments as successful directly.
+- Approve their own leave applications.
+- Change their own application status without authorization.
+
+### Organizer Role
+
+Authorized organizers may:
+
+- Create and manage timetables.
+- Manage fee assignments according to their permissions.
+- Record payments.
+- View institutional fee records.
+- Issue and download receipts.
+- Review leave applications.
+- Approve or reject leave applications.
+
+Validate authorization on the backend, not only in the frontend.
+
+Do not expose sensitive data through unrestricted APIs.
+
+---
+
+# 11. REQUIRED TESTING
+
+Do not stop after changing the code.
+
+Run the available tests and verify the complete workflows.
+
+## Timetable Tests
+
+- Add one slot and confirm that exactly one appears.
+- Add multiple different slots and confirm that all remain unique.
+- Submit the same save request twice and verify duplicate prevention.
+- Test conflicting faculty assignments.
+- Test conflicting classroom assignments.
+- Refresh the page and confirm that the saved timetable remains correct.
+
+## Fee Selection Tests
+
+- Open "3. Record Fee Payment & Issue Receipt."
+- Verify that each student appears only once.
+- Verify that fee structures and installment options are not duplicated.
+- Select different students and confirm that the corresponding fee information loads correctly.
+
+## PDF Receipt Tests
+
+- Generate a receipt for a successful payment.
+- Download it more than once.
+- Confirm that the receipt number and transaction reference remain unchanged.
+- Check that all fee components are aligned.
+- Verify previous payments and remaining balance.
+- Verify that long tables do not overlap or become unreadable.
+- Confirm that unsuccessful payments are not represented as successful receipts.
+
+## Student Fee Dashboard Tests
+
+- Verify that the installment schedule appears only once.
+- Verify that the fine breakdown appears only once.
+- Verify installment numbering.
+- Verify paid and outstanding amounts.
+- Verify that the figures match the organizer's ledger.
+
+## Demo Payment Tests
+
+- Complete a successful demo payment.
+- Simulate a failed payment.
+- Cancel a payment.
+- Refresh the page after payment.
+- Attempt duplicate submission.
+- Simulate a network interruption.
+- Verify that only successful payments reduce the outstanding balance.
+- Verify that the receipt is generated from the saved payment.
+- Confirm that the organizer can see the transaction.
+
+## Leave Application Tests
+
+- Submit a valid leave application.
+- Submit a form with missing fields.
+- Test an invalid date range.
+- Verify that the application is persisted in the database.
+- Verify that it appears in the organizer's dashboard.
+- Verify that duplicate submissions are prevented.
+- Approve an application and verify the student sees the updated status.
+- Reject an application and verify the student sees the updated status.
+- Refresh both panels and confirm that the data remains consistent.
+- Test real-time updates across separate browser sessions.
+
+---
+
+# 12. IMPLEMENTATION REQUIREMENTS
+
+Before editing the code:
+
+1. Inspect the existing project structure.
+2. Identify the frontend framework and current state-management approach.
+3. Identify backend technologies and existing API conventions.
+4. Inspect the database schema and relationships.
+5. Trace the affected screens to their API endpoints and database queries.
+6. Reproduce the reported bugs.
+7. Identify the actual root causes.
+8. Check which existing components and services can be reused.
+
+Then implement the fixes in the existing application.
+
+### Development Rules
+
+- Do not rebuild the application from scratch.
+- Do not remove working features.
+- Do not replace the existing database with temporary mock data.
+- Do not hardcode student details, payment amounts, or transaction results into production application logic.
+- Do not create a second fee ledger.
+- Do not create a separate payment history that disagrees with the organizer's ledger.
+- Do not generate fake official receipts.
+- Do not implement only frontend changes when the actual issue originates in the backend.
+- Do not hide duplicate entries without correcting the underlying data problem.
+- Do not use localStorage as the authoritative financial database.
+- Do not use simulated data in place of real application records, except for clearly labelled demonstration payment outcomes.
+- Do not break existing authentication, permissions, or database relationships.
+- Do not claim that a feature is fixed unless it has been tested.
+
+If a required feature depends on a missing API, database field, or backend service, implement the missing part using the existing architecture.
+
+If a database migration is necessary, make it safe and preserve existing data.
+
+---
+
+# 13. FINAL ACCEPTANCE CRITERIA
+
+The task is complete only when all the following conditions are met:
+
+1. Clicking "Add Slot" creates exactly one timetable slot.
+2. Timetable conflicts and duplicate records are prevented.
+3. Student and fee dropdowns no longer show duplicate options.
+4. Fee receipts download as properly aligned, professional PDFs.
+5. Receipts include a complete, accurate fee breakdown.
+6. Every receipt has a stable, unique receipt number.
+7. Every payment has a unique transaction reference.
+8. The student installment schedule appears only once.
+9. The student fine breakdown appears only once.
+10. Installment numbers and amounts are correct.
+11. Students can initiate demo fee payments from their own panel.
+12. Successful demo payments update the authoritative fee ledger.
+13. Failed and cancelled payments do not reduce the outstanding balance.
+14. Students can download their own properly formatted receipts.
+15. The organizer sees the same successful payments as the student.
+16. Students can submit leave applications successfully.
+17. Submitted applications appear in the organizer's dashboard without requiring a manual refresh under normal operating conditions.
+18. Organizers can approve or reject leave applications.
+19. Students can view the updated leave application status.
+20. All affected features work after page refresh and across separate browser sessions.
+21. Existing working features remain functional.
+22. No unauthorized access to other students' data is introduced.
+23. Relevant automated tests pass, and any remaining limitations are explicitly documented.
+
+---
+
+# 14. FINAL REPORT
+
+After implementation, provide a concise but complete report containing:
+
+### A. Root Causes
+Explain why each reported bug occurred.
+
+### B. Files Changed
+List the frontend components, backend services, API endpoints, database migrations, and other files modified.
+
+### C. Database Changes
+Explain any schema changes, constraints, indexes, or duplicate-data cleanup performed.
+
+### D. Features Fixed
+Summarize the completed timetable, fee management, PDF receipt, student payment, and leave application improvements.
+
+### E. Testing Results
+Report the tests executed and whether they passed.
+
+### F. Remaining Issues
+Identify any unresolved issues, external dependencies, or limitations.
+
+### G. Manual Verification
+Provide the exact steps needed to verify the complete workflows in the running application.
+
+Do not report untested functionality as complete.
+
+## FINAL INSTRUCTION
+
+Start by inspecting the existing codebase and tracing each reported bug to its root cause.
+
+Then implement the necessary frontend, backend, and database fixes, verify that all modules use consistent data, and test the complete workflows.
+
+**Prioritize correctness, duplicate prevention, financial accuracy, secure authorization, persistent data, real-time synchronization, and professional PDF generation.**
+
+Make the actual changes in the existing project, not merely recommendations or sample code.

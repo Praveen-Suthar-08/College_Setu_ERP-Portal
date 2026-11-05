@@ -1,0 +1,1405 @@
+# MASTER PROMPT: COLLEGE PORTAL REDESIGN, FUNCTIONALITY FIXES & REAL-TIME SYSTEM INTEGRATION
+
+## 1. PROJECT OBJECTIVE
+
+Improve and upgrade the existing College Portal into a modern, premium, professional, fully functional, and real-time academic management platform.
+
+The current application already contains student and organizer dashboards, user profiles, academic timetables, fee management, faculty mentoring, leave applications, academic doubts, and approval workflows.
+
+**Your task is to improve the existing application, not build a separate application or replace working features.**
+
+Inspect the existing codebase, understand its architecture, identify the root causes of the reported problems, and implement complete solutions.
+
+### Primary objectives
+
+1. Remove the college-code switching feature from the student panel.
+2. Redesign the profile section into a clean, organized, professional layout.
+3. Make the academic timetable visually attractive, readable, and correctly ordered.
+4. Redesign the student fee ledger and official receipts.
+5. Fix faculty mentoring functionality.
+6. Organize and fully implement the student leave application workflow.
+7. Make academic doubts and helpdesk tickets clickable, expandable, and detailed.
+8. Implement genuine real-time updates across student and organizer dashboards.
+9. Eliminate duplicate records, inconsistent statuses, stale data, and unnecessary page refreshes.
+10. Preserve existing authentication, account isolation, database records, permissions, and working features.
+
+Do not merely change colors or rearrange components. Fix the underlying functionality as well.
+
+---
+
+# 2. REMOVE COLLEGE-CODE SWITCHING FROM THE STUDENT PANEL
+
+Remove the **Switch College / Switch College Code** feature from the student interface.
+
+### Requirements
+
+- Remove the college-switching button, menu, card, or related action from the student dashboard.
+- Remove any student-facing workflow that allows changing the student's institutional affiliation through a college-code switch.
+- Retain the student's existing registered college and its associated unique college code.
+- Display the correct college name and code retrieved from the authenticated student's account.
+- Ensure that the student cannot accidentally change their institution through profile editing or another student-facing control.
+- Preserve the college code in the database and use it wherever it is required for institutional identification.
+- Keep organizer and administrator workflows working as intended.
+
+### Important
+
+Do not delete the college registration system or organizer-generated unique codes.
+
+Students must remain associated with their registered institution unless an authorized administrative process explicitly permits a transfer.
+
+---
+
+# 3. REDESIGN THE PROFILE PAGE
+
+Transform the existing profile page into a premium, modern, well-organized institutional profile.
+
+The current page contains useful information, but its layout is crowded, some labels are confusing, and information is not grouped clearly.
+
+Use a modern dashboard design with clear headings, consistent spacing, organized information cards, readable typography, and responsive layouts.
+
+## A. Profile Header
+
+Create a professional profile header containing:
+
+- Profile avatar or AI-generated avatar.
+- Student's full name.
+- Verification badge.
+- Account status: Active or Inactive.
+- Username.
+- Primary role.
+- Department.
+- Registered college name.
+- College code.
+- Profile completeness percentage.
+- Edit Profile button.
+
+Example:
+
+**PRAV**
+
+Verified · Active
+
+@prav038 · Student · Computer Science and Engineering
+
+College: COLLEGE
+
+College Code: COLL-0980
+
+Profile Completeness: 71%
+
+Use a clean avatar presentation and maintain support for selecting an available built-in avatar.
+
+The avatar should remain consistent across the application and update correctly when the user changes it.
+
+## B. Profile Navigation
+
+Organize the profile into the following sections:
+
+1. Overview
+2. Personal Information
+3. Academic & Role Details
+4. Contact Information
+5. Professional Profile
+6. Account & Security
+7. Preferences
+
+Use a clean tab navigation system or sidebar, depending on the existing application layout.
+
+On mobile devices, the navigation should remain easy to use without horizontal overflow.
+
+## C. Overview Section
+
+Display the most important account information in separate cards.
+
+### Account Information
+
+- Primary Role: Student
+- Student ID: 9874
+- Department: CSE
+- College: Actual registered college
+- College Code: COLL-0980
+
+### Account Security
+
+- Authentication method.
+- Email verification status.
+- Phone verification status.
+- Account status.
+- Two-factor authentication status, if supported.
+
+Do not display security features as enabled unless they are actually configured and verified.
+
+## D. About & Institutional Biography
+
+Display a clearly formatted biography section.
+
+Example:
+
+**About Me**
+
+Dedicated student focused on academic excellence, continuous learning, and contributing to a successful campus community.
+
+Allow users to edit and save their biography.
+
+Avoid displaying irrelevant administrative descriptions on a student profile.
+
+For example, a student should not automatically receive descriptions such as:
+
+- Higher Education Administration.
+- Institutional Governance.
+- Policy Compliance.
+
+unless these are explicitly entered by the user and relevant to their profile.
+
+## E. Skills & Areas of Interest
+
+Create two separate sections:
+
+**Skills & Competencies**
+- Programming.
+- Data Analytics.
+- Communication.
+- Problem Solving.
+
+**Areas of Interest**
+- Software Development.
+- Artificial Intelligence.
+- Cloud Computing.
+- Internet of Things.
+
+These should be editable and appropriate to the student's actual information.
+
+Do not automatically populate unrelated skills or professional expertise.
+
+## F. Contact & Institutional Details
+
+Display information in a clean two-column layout on desktop and a single-column layout on mobile.
+
+Include:
+
+| Field | Example |
+|---|---|
+| Email | pra@gmail.com |
+| Phone | 87941651312 |
+| Location | Bengaluru, Karnataka, India |
+| Role | Student |
+| Department | CSE |
+| College | Actual registered college |
+| College Code | COLL-0980 |
+| Student ID | 9874 |
+| Member Since | 26 October 2026 |
+
+Add copy-to-clipboard buttons for email, phone number, student ID, and college code where appropriate.
+
+Show a small success notification after copying.
+
+Keep read-only institutional fields protected from unauthorized changes.
+
+## G. Profile Editing
+
+Provide a proper Edit Profile experience.
+
+Requirements:
+
+- Editable personal details.
+- Editable contact details, subject to validation and verification rules.
+- Editable biography and interests.
+- Built-in avatar selection.
+- Save Changes and Cancel buttons.
+- Form validation.
+- Loading states.
+- Success and error notifications.
+- Persistent database storage.
+- Immediate UI updates after successful saving.
+
+Do not allow the profile to display one set of details while the database stores another.
+
+The profile must always show information belonging to the currently authenticated account.
+
+---
+
+# 4. REDESIGN THE ACADEMIC TIMETABLE
+
+## Current Section
+
+ACADEMIC SCHEDULE
+
+Weekly Academic Timetable & Room Allocations
+
+B.Tech 2026 Cohort · COLLEGE
+
+The existing timetable appears as a basic table with inconsistent ordering and limited visual hierarchy.
+
+Redesign it into a modern academic scheduling interface.
+
+## A. Timetable Header
+
+Create a polished header containing:
+
+**Academic Timetable**
+
+Weekly Class Schedule & Room Allocations
+
+B.Tech 2026 Cohort · Actual College Name
+
+Include:
+
+- Current week indicator.
+- Current date.
+- Department filter.
+- Semester filter, if supported.
+- Day selector.
+- List and weekly-calendar views.
+- Print timetable button.
+- Download PDF button, if already supported.
+
+Filters must operate on actual timetable records.
+
+## B. Weekly Timetable View
+
+Display Monday through Saturday as separate day columns where space permits.
+
+For smaller screens, use a horizontal day selector or vertically stacked daily schedule.
+
+Represent each lecture as a visually distinct card containing:
+
+- Subject name.
+- Subject code.
+- Start and end time.
+- Faculty name.
+- Lecture hall or room.
+- Period number.
+- Relevant class or cohort information.
+
+Use restrained colors, consistent typography, rounded corners, and clear spacing.
+
+Highlight the current day.
+
+If a class is currently in progress, optionally show a subtle current-class indicator based on the actual local time.
+
+Do not use decorative elements that make important information harder to read.
+
+## C. Correct Period Ordering
+
+The current example displays periods out of sequence:
+
+- P5 · 12:00–12:50
+- P4 · 11:00–11:50
+- P2 · 10:00–10:50
+- P1 · 09:00–09:50
+
+Sort the timetable chronologically by start time.
+
+The expected display is:
+
+| Period | Time | Subject | Faculty | Room |
+|---|---|---|---|---|
+| P1 | 09:00–09:50 | BCS201 · Cloud Computing | John Sir | LH-204 |
+| P2 | 10:00–10:50 | CS204 · IoT | John | LH-204 |
+| P4 | 11:00–11:50 | BCS073 · Test | Test | LH-204 |
+| P5 | 12:00–12:50 | CS901 · PC | Test | LH-204 |
+
+Use the actual subject and faculty data from the database. The names above are examples based on the existing records.
+
+Do not invent missing periods or display an empty period as a scheduled lecture.
+
+Preserve configured break periods and institutional scheduling rules.
+
+## D. Timetable Data Integrity
+
+Fix the existing timetable duplication problem.
+
+When an organizer clicks Add Slot to Timetable:
+
+- Create exactly one timetable record.
+- Prevent accidental duplicate submissions.
+- Disable the submit button while the request is processing.
+- Validate required fields.
+- Detect conflicting schedules where appropriate.
+- Prevent overlapping room allocations.
+- Prevent overlapping faculty schedules when the scheduling rules require it.
+- Avoid duplicate records when users refresh or reopen the page.
+
+Use database constraints and appropriate backend validation where applicable.
+
+Do not rely exclusively on frontend checks.
+
+## E. Real-Time Timetable Synchronization
+
+When an organizer:
+
+- Creates a timetable slot.
+- Edits a lecture.
+- Changes the faculty member.
+- Changes the room.
+- Changes the lecture time.
+- Deletes a timetable slot.
+
+the student's timetable must update automatically.
+
+No manual refresh, logout, or page reopening should be required.
+
+Ensure that students see only the timetable applicable to their institution, department, semester, and cohort.
+
+---
+
+# 5. REDESIGN THE STUDENT FINANCE LEDGER
+
+## Current Section
+
+STUDENT FINANCE LEDGER
+
+Fee Installments & Official Receipts
+
+All balances and late fines are tracked accurately with downloadable receipts.
+
+Redesign this section into a premium financial dashboard that is easy for students to understand.
+
+The interface should communicate how much was assigned, how much was paid, what remains outstanding, and whether any payment is overdue.
+
+## A. Financial Summary Cards
+
+Display four prominent cards.
+
+### 1. Gross Assigned Fees
+
+Show:
+- Total fees assigned.
+- Applicable concessions.
+- Final payable amount.
+
+### 2. Total Paid
+
+Show:
+- Total successfully recorded payments.
+- Number of verified receipts.
+- Payment progress.
+
+### 3. Accrued Late Fine
+
+Show:
+- Current applicable late fines.
+- Relevant overdue installments.
+- Due-date information.
+
+### 4. Net Outstanding Due
+
+Show:
+- Remaining payable balance.
+- Overdue amount.
+- Upcoming due amount.
+
+Use INR formatting throughout.
+
+Examples:
+
+₹15,000.00
+
+₹5,000.00
+
+₹250.00
+
+₹10,250.00
+
+These values are illustrative. Display actual calculated values from the student's records.
+
+## B. Fee Calculation Rules
+
+Implement consistent calculations.
+
+For each fee assignment:
+
+**Net Assigned Fee = Gross Assigned Fee − Applicable Concession**
+
+**Remaining Principal = Net Assigned Fee − Successfully Recorded Payments Allocated to That Fee**
+
+**Outstanding Balance = Remaining Principal + Applicable Unpaid Late Fine**
+
+Calculate late fines according to the institution's configured rules, applicable due dates, grace periods, and payment allocations.
+
+Important rules:
+
+- Pending payments must not be counted as successfully paid.
+- Failed payments must not reduce the outstanding balance.
+- Cancelled or reversed transactions must be handled correctly.
+- Partial payments must update the remaining balance immediately.
+- A payment must not be counted twice.
+- Late fines must not be charged incorrectly after an installment has been fully settled.
+- Use consistent monetary precision, preferably integer paise in backend calculations.
+- Keep student and organizer calculations consistent.
+
+If the existing system uses a different legitimate accounting rule, preserve the configured institutional policy and make the calculation transparent.
+
+## C. Fee Installment Schedule & Fine Breakdown
+
+Replace the plain text empty state with a professional installment interface.
+
+For every installment, display:
+
+- Fee title.
+- Fee category.
+- Original amount.
+- Concession.
+- Final payable amount.
+- Due date.
+- Amount paid.
+- Remaining amount.
+- Applicable late fine.
+- Payment status.
+- Available payment actions.
+
+Use clear status badges:
+
+- Upcoming.
+- Due Soon.
+- Partially Paid.
+- Paid.
+- Overdue.
+- Payment Pending.
+- Payment Failed.
+
+Each installment should have an expandable details section.
+
+If no installments exist, show a clean empty-state card:
+
+**No Fee Installments Yet**
+
+Your college has not assigned any fee installments to your account.
+
+Your installment schedule will appear here once fees are assigned.
+
+Do not show misleading payment buttons when no payable assignment exists.
+
+## D. Student Fee Payment
+
+Provide a clear Pay Now action for eligible outstanding installments.
+
+Support the existing demo payment gateway or payment integration.
+
+The payment interface should display:
+
+- Student name and ID.
+- Fee assignment.
+- Amount due.
+- Amount already paid.
+- Remaining amount.
+- Payment amount.
+- Payment method.
+- Applicable fees or fines.
+- Final amount payable.
+- Transaction status.
+
+If partial payments are supported, allow the student to enter an eligible amount within the remaining balance.
+
+Show a clear confirmation before submitting payment.
+
+After successful payment:
+
+1. Record the payment exactly once.
+2. Update the installment balance.
+3. Update the student's financial summary.
+4. Update the organizer's financial ledger.
+5. Generate an official receipt with a unique receipt number.
+6. Display the transaction reference.
+7. Update the payment history.
+8. Trigger any configured fee notifications.
+9. Synchronize all affected interfaces in real time.
+
+Do not treat a frontend success message as proof of payment.
+
+For a demo gateway, explicitly label the transaction as a simulated or demo payment. Do not represent simulated payments as verified real-world bank transactions.
+
+## E. Official Numbered Receipts
+
+Redesign receipts into a clean, printable, professional financial document.
+
+Each receipt should contain:
+
+- College name and branding.
+- Receipt number.
+- Transaction reference or transaction ID.
+- Student name.
+- Student ID.
+- Department.
+- Fee category.
+- Fee assignment.
+- Payment date and time.
+- Payment method.
+- Gross fee amount.
+- Concession.
+- Fine, if applicable.
+- Amount paid in this transaction.
+- Total amount paid to date.
+- Remaining balance.
+- Payment status.
+
+Provide:
+
+- Download PDF.
+- Print Receipt.
+- View Receipt Details.
+
+PDF requirements:
+
+- Proper margins.
+- Consistent typography.
+- Correct currency formatting.
+- No overlapping text.
+- No clipped transaction IDs.
+- Clear fee breakdown.
+- Accurate remaining balance.
+- Unique receipt number.
+- One download per click.
+
+Fix duplicate PDF downloads and ensure the download action cannot accidentally trigger multiple exports.
+
+## F. Fee Email Directives & Automated Notifications
+
+Create a well-organized notification history.
+
+Display:
+
+- Notification subject.
+- Notification type.
+- Related fee installment.
+- Scheduled or sent date.
+- Delivery status.
+- Failure reason, if applicable.
+
+Support relevant notifications for:
+
+- Upcoming fee deadlines.
+- Overdue fees.
+- Successful payments.
+- Partial payments.
+- Receipt issuance.
+- Payment failures.
+
+Only show a notification as delivered when the delivery mechanism has actually confirmed delivery.
+
+If email sending is unavailable or fails, show the appropriate status rather than reporting a false success.
+
+Prevent duplicate notifications for the same event.
+
+---
+
+# 6. FIX FACULTY MENTORING
+
+## Current Section
+
+ACADEMIC ADVISING
+
+Faculty Mentor · fac-1
+
+Schedule advising sessions and review shared mentoring notes.
+
+Shared Mentoring Session Summaries
+
+Action items and academic guidance shared by your faculty advisor.
+
+Verified Advisor Log
+
+No mentoring session summaries recorded yet.
+
+The mentoring section currently does not work correctly.
+
+Implement the complete student-faculty mentoring workflow.
+
+## A. Mentoring Dashboard
+
+Display:
+
+- Assigned faculty mentor.
+- Mentor name.
+- Department.
+- Upcoming advising sessions.
+- Completed sessions.
+- Shared mentoring notes.
+- Pending action items.
+- Last meeting date.
+- Next scheduled meeting.
+
+Use actual faculty assignments from the database.
+
+Do not hardcode a mentor ID such as `fac-1` for every student.
+
+## B. Schedule an Advising Session
+
+Allow students to request a mentoring session.
+
+Fields:
+
+- Meeting title or purpose.
+- Description.
+- Preferred date.
+- Preferred time.
+- Meeting mode, if supported.
+- Additional notes.
+
+After submission:
+
+- Validate the requested date and time.
+- Save the request.
+- Show the request in the student dashboard.
+- Notify the assigned mentor.
+- Display the request in the faculty dashboard.
+- Update the request status in real time.
+
+Use statuses such as:
+
+- Requested.
+- Approved.
+- Rescheduled.
+- Completed.
+- Rejected.
+- Cancelled.
+
+Prevent conflicting confirmed appointments where applicable.
+
+## C. Faculty Mentoring Notes
+
+Allow authorized faculty mentors to create session summaries containing:
+
+- Session date.
+- Discussion topics.
+- Academic guidance.
+- Action items.
+- Follow-up date.
+- Notes shared with the student.
+
+Distinguish between student-visible mentoring notes and private faculty notes.
+
+Only notes explicitly marked as shared with the student should appear in the student's account.
+
+## D. Fix Empty and Broken States
+
+When no mentoring sessions exist, display:
+
+**Your Academic Mentoring Journey Starts Here**
+
+You have no shared mentoring session summaries yet. Request an advising session with your assigned faculty mentor to get started.
+
+Include an appropriate action button.
+
+Do not leave the section looking broken or unfinished.
+
+## E. Real-Time Mentoring Updates
+
+When a student requests a session, the mentor should see it without refreshing.
+
+When a mentor approves, rejects, or reschedules the request, the student's dashboard should update automatically.
+
+When a mentor publishes a student-visible summary, it should immediately appear in the student's mentoring section.
+
+---
+
+# 7. REDESIGN THE STUDENT LEAVE APPLICATION WORKFLOW
+
+## Current Section
+
+LEAVE WORKFLOW
+
+Student Leave Applications & Approval Chain
+
+Workflow: Student → Mentor → HOD (HOD approval required when leave exceeds 3 days or overlaps an exam).
+
+Transform this into a clear, step-by-step leave management system.
+
+## A. Leave Application Form
+
+Include:
+
+- Leave type.
+- Start date.
+- End date.
+- Number of days.
+- Reason for leave.
+- Supporting document, if required or supported.
+- Emergency contact, if required by institutional policy.
+- Submission date.
+- Relevant examination or attendance information, where available.
+
+Validate the form before submission.
+
+Ensure that the end date is not earlier than the start date.
+
+Calculate the number of leave days according to the institution's configured counting rules.
+
+Prevent accidental duplicate applications caused by repeated clicks.
+
+## B. Approval Workflow
+
+Implement the approval chain:
+
+**Student → Faculty Mentor → HOD**
+
+Apply the configured rules:
+
+- Mentor review is required.
+- HOD approval is required when leave exceeds three days.
+- HOD approval is required when the leave overlaps an examination.
+- Other institutional rules must remain configurable.
+
+The backend must enforce the approval requirements.
+
+Do not allow the frontend to mark a leave application as approved merely because a student changes a status field.
+
+## C. Application Tracking
+
+Show a professional leave application table or card list.
+
+For every application, display:
+
+- Application reference.
+- Leave type.
+- Start date.
+- End date.
+- Number of days.
+- Submission date.
+- Current approval stage.
+- Current status.
+- Reviewer comments.
+- Final decision.
+
+Possible statuses:
+
+- Draft.
+- Submitted.
+- Pending Mentor Approval.
+- Pending HOD Approval.
+- Approved.
+- Rejected.
+- Withdrawn.
+
+Display the approval stages using a visual progress tracker.
+
+For example:
+
+Student Submitted → Mentor Review → HOD Review → Final Decision
+
+Clearly identify which stage is pending.
+
+## D. Leave Application Details
+
+Clicking an application should open a detail page, modal, or expandable panel containing:
+
+- Full application details.
+- Approval history.
+- Reviewer comments.
+- Supporting documents.
+- Submission and decision timestamps.
+- Current workflow status.
+
+Provide a withdrawal or cancellation action only when permitted by the institutional rules and current approval stage.
+
+## E. Organizer and Faculty Integration
+
+Ensure the appropriate faculty mentor and HOD can see applications requiring their review.
+
+When an application is submitted:
+
+- Update the student's application list immediately.
+- Notify the assigned reviewer.
+- Display the pending request in the correct reviewer dashboard.
+- Update the approval count.
+- Synchronize the final decision back to the student.
+
+No manual refresh should be required.
+
+---
+
+# 8. FIX ACADEMIC DOUBTS & HELPDESK TICKETS
+
+## Current Section
+
+My Academic Doubts & Helpdesk Tickets (1)
+
+Currently, clicking an individual doubt or helpdesk ticket should open its complete details, but this behavior is missing or incomplete.
+
+Implement a proper ticket-management experience.
+
+## A. Ticket List
+
+Display each doubt or helpdesk ticket as a clickable card or table row.
+
+Show:
+
+- Ticket ID.
+- Ticket title.
+- Category.
+- Subject or course.
+- Submission date.
+- Priority, if supported.
+- Assigned faculty member or support team.
+- Current status.
+- Last updated time.
+
+Use clear status badges:
+
+- Open.
+- Submitted.
+- Assigned.
+- In Progress.
+- Awaiting Student Response.
+- Resolved.
+- Closed.
+
+Use the application's actual supported statuses and workflow.
+
+## B. Click to View Complete Details
+
+When the student clicks any ticket, open a dedicated detail page, modal, or side panel.
+
+Display:
+
+1. Ticket ID.
+2. Full title.
+3. Complete doubt or issue description.
+4. Category.
+5. Related subject.
+6. Attached files or images, if supported.
+7. Submission date and time.
+8. Assigned faculty or support staff.
+9. Complete reply history.
+10. Current status.
+11. Resolution details.
+12. Last updated timestamp.
+
+Do not display only a short description or ticket title.
+
+## C. Conversation and Replies
+
+Provide a conversation-style interface where permitted.
+
+Students should be able to:
+
+- Read faculty replies.
+- Add a follow-up message.
+- Upload supported attachments.
+- See response timestamps.
+- Track status changes.
+
+Faculty or support staff should be able to:
+
+- Open the ticket.
+- Review the full issue.
+- Reply.
+- Change the ticket status according to permissions.
+- Add resolution notes.
+- Close or reopen tickets when allowed.
+
+Ensure messages are associated with the correct ticket and authorized participants.
+
+## D. Ticket Creation and Updates
+
+When a student submits a new doubt:
+
+- Save the ticket.
+- Generate a unique ticket ID.
+- Show it in the student dashboard.
+- Route it to the appropriate faculty or support team.
+- Update relevant ticket counts.
+- Notify the assigned recipient.
+
+When a reply or status change occurs, update the ticket detail view and ticket list in real time.
+
+Do not require the student to refresh the page to see a reply.
+
+---
+
+# 9. CRITICAL: IMPLEMENT REAL-TIME UPDATES ACROSS THE ENTIRE PORTAL
+
+This is the highest-priority functional requirement.
+
+Currently, when a student sends an approval request to the organizer, the organizer does not see the request until the page is refreshed.
+
+Similar delays occur in timetables and other modules.
+
+**Fix the underlying synchronization architecture instead of adding manual refresh buttons as a workaround.**
+
+## A. Identify the Root Cause
+
+Inspect the existing application to determine why data does not update automatically.
+
+Check:
+
+- Frontend state management.
+- API request and response handling.
+- Database persistence.
+- Authentication and session handling.
+- Organizer and student data queries.
+- Query caching and invalidation.
+- Event subscriptions.
+- Cross-tab synchronization.
+- Backend event broadcasting.
+- Optimistic UI updates.
+- Error handling.
+- Duplicate API requests.
+- Stale component state.
+- Incorrect account or institution filters.
+
+Determine whether the existing implementation already uses WebSockets, Server-Sent Events, BroadcastChannel, or polling.
+
+Fix the actual cause of stale data.
+
+Do not replace a working real-time architecture without a clear reason.
+
+## B. Implement an Appropriate Real-Time Architecture
+
+Use the application's existing stack and backend architecture.
+
+Prefer the following approach where appropriate:
+
+1. Persist the change successfully in the database.
+2. Commit the transaction.
+3. Publish a real-time event.
+4. Deliver the event to authorized subscribers.
+5. Update the relevant frontend state or invalidate the affected queries.
+6. Reconcile the UI with the authoritative server response.
+
+Use WebSockets or Server-Sent Events for server-to-client updates where appropriate.
+
+Use BroadcastChannel only for same-browser, cross-tab coordination.
+
+**Do not rely on BroadcastChannel alone for synchronization between different browsers or devices.**
+
+If a full real-time connection is unavailable, implement a reasonable polling fallback with appropriate cleanup and visibility handling.
+
+Do not create an excessive number of polling requests.
+
+## C. Real-Time Student Approval Requests
+
+Required behavior:
+
+1. A student submits a registration, membership, leave, or other applicable approval request.
+2. The backend validates and saves the request.
+3. The organizer's pending request count updates.
+4. The request appears in the appropriate organizer list.
+5. The organizer can open the request and inspect its details.
+6. The organizer approves or rejects it.
+7. The student's status updates automatically.
+8. The organizer and student dashboards display consistent information.
+
+This must work across separate browser sessions and different devices.
+
+Do not assume the student and organizer are using the same browser.
+
+## D. Real-Time Timetable Synchronization
+
+When an organizer creates, edits, or deletes a timetable entry:
+
+- Persist the change.
+- Publish an update event.
+- Update the organizer's timetable.
+- Update the relevant student timetable.
+- Update affected calendar views and timetable summaries.
+- Ensure the period order remains correct.
+
+No refresh should be required.
+
+## E. Real-Time Fee Synchronization
+
+When an organizer assigns a fee, records a payment, changes a fee assignment, or corrects a payment status:
+
+- Update the organizer's ledger.
+- Update the student's fee dashboard.
+- Update the installment balance.
+- Update payment history.
+- Update official receipt records.
+- Update relevant notification counts.
+
+Never show a payment as unpaid in one interface while showing it as paid in another when both interfaces refer to the same authoritative transaction state.
+
+Use consistent payment-status rules across the application.
+
+## F. Real-Time Faculty and Leave Updates
+
+Synchronize:
+
+- Mentoring requests.
+- Advising session approvals.
+- Shared mentoring notes.
+- Leave applications.
+- Mentor decisions.
+- HOD decisions.
+- Pending approval counters.
+- Helpdesk tickets.
+- Faculty replies.
+- Ticket resolution status.
+
+Update only the relevant records and interface components.
+
+Avoid unnecessarily reloading the entire dashboard after every event.
+
+## G. Real-Time Connection Reliability
+
+Implement:
+
+- Connection status monitoring.
+- Reconnection with backoff.
+- Subscription cleanup.
+- Event deduplication.
+- Appropriate event ordering.
+- Authorization checks for every protected subscription.
+- Handling for missed events.
+- State reconciliation after reconnection.
+- Safe fallback behavior.
+
+Use stable event identifiers or versions where needed to prevent duplicate updates.
+
+A successful event delivery must not cause duplicate timetable slots, fee transactions, receipts, or approval records.
+
+## H. Account and Institution Isolation
+
+Preserve strict separation between accounts and institutions.
+
+Every event and data query must be scoped to the correct:
+
+- Authenticated user.
+- Institution.
+- Role.
+- Department.
+- Academic cohort or other applicable authorization boundary.
+
+Students must not receive another student's private records.
+
+Organizers must not receive unrelated institutions' records.
+
+Faculty must only receive information they are authorized to access.
+
+Enforce authorization on the backend, not just through frontend visibility.
+
+---
+
+# 10. STANDARDIZE LOADING, EMPTY, SUCCESS, AND ERROR STATES
+
+Every major module should behave consistently.
+
+### Loading
+
+Display an appropriate skeleton or loading indicator while data is being fetched.
+
+### Empty State
+
+Explain what is missing and provide an appropriate next action.
+
+Examples:
+
+- No fee installments assigned.
+- No mentoring sessions scheduled.
+- No leave applications submitted.
+- No academic doubts submitted.
+- No timetable entries available.
+
+### Success State
+
+Display a clear confirmation after an operation succeeds.
+
+### Error State
+
+Explain what went wrong and how the user can recover.
+
+Do not silently swallow API errors.
+
+### Pending State
+
+Use clear visual indicators when an action is still being processed.
+
+Prevent users from submitting the same operation repeatedly while the request is in progress.
+
+### Refresh and Reconnection
+
+If the real-time connection is temporarily interrupted, display a subtle connection indicator when appropriate and reconcile data after reconnection.
+
+Do not lose successfully saved data because of a temporary frontend connection failure.
+
+---
+
+# 11. VISUAL DESIGN SYSTEM
+
+Use a consistent, premium design language across the student portal.
+
+## Design Direction
+
+- Modern academic SaaS dashboard.
+- Clean, professional, polished interface.
+- Strong visual hierarchy.
+- Generous spacing.
+- Carefully structured cards.
+- Consistent typography.
+- Subtle borders and shadows.
+- Restrained accent colors.
+- Consistent icons.
+- Smooth but minimal transitions.
+- Accessible text contrast.
+- Responsive layouts.
+
+## Layout
+
+Use a consistent page structure:
+
+1. Dashboard navigation.
+2. Page title and description.
+3. Primary actions.
+4. Summary cards, where relevant.
+5. Main content.
+6. Secondary information.
+7. Empty, loading, or error states.
+
+## Tables and Cards
+
+Tables should include:
+
+- Clear column headings.
+- Correct data alignment.
+- Readable spacing.
+- Appropriate date and currency formatting.
+- Consistent status badges.
+- Responsive behavior.
+- Useful row actions.
+
+On smaller screens, convert wide tables into stacked cards or use a properly designed horizontal scrolling area.
+
+## Interaction Design
+
+Every visible action must work.
+
+Examples:
+
+- Edit Profile.
+- Save Changes.
+- Copy Email.
+- View Timetable.
+- Download Receipt.
+- Pay Now.
+- Request Advising Session.
+- Apply for Leave.
+- View Ticket.
+- Reply to Ticket.
+
+Do not add buttons that are decorative or disconnected from actual functionality.
+
+---
+
+# 12. DATA CONSISTENCY AND BACKEND REQUIREMENTS
+
+Review the existing database models and API endpoints before changing the implementation.
+
+Preserve existing records and avoid unnecessary schema changes.
+
+Where appropriate, introduce or correct:
+
+- Unique constraints.
+- Foreign-key relationships.
+- Transaction boundaries.
+- Authorization checks.
+- Idempotency keys.
+- Server-side validation.
+- Database indexes.
+- Consistent status enums.
+- Event publication after successful persistence.
+- Audit history for sensitive actions.
+
+Ensure that:
+
+- Each student belongs to the correct institution.
+- Each student has the correct profile.
+- Each timetable entry belongs to the correct academic context.
+- Each fee assignment references the correct student.
+- Each payment references the correct fee assignment.
+- Each receipt references the correct payment.
+- Each mentor belongs to the correct assignment or department.
+- Each leave application follows the correct approval chain.
+- Each helpdesk ticket has the correct owner and authorized participants.
+
+Do not seed fake production records to make the dashboard appear populated.
+
+Use existing records and legitimate empty states.
+
+If test data is required, keep it isolated from production data.
+
+---
+
+# 13. TESTING AND ACCEPTANCE CRITERIA
+
+Do not consider the task complete until the following scenarios have been tested.
+
+## Test 1: Student Profile
+
+- Sign in as Student A.
+- Verify the correct name, student ID, email, phone, college, and college code.
+- Edit permitted profile details.
+- Save the changes.
+- Reload the page.
+- Confirm that the changes persist.
+- Verify that another student's profile is not displayed.
+
+## Test 2: College-Code Switching
+
+- Sign in as a student.
+- Verify that no Switch College or Switch College Code action exists in the student interface.
+- Confirm that the registered college association remains intact.
+
+## Test 3: Timetable
+
+- Create one timetable slot as an organizer.
+- Confirm that exactly one record is created.
+- Open the student dashboard in another browser.
+- Confirm that the new slot appears automatically.
+- Change the lecture time.
+- Confirm that the student timetable updates automatically.
+- Verify chronological period ordering.
+- Test invalid and overlapping schedules.
+
+## Test 4: Fee Assignment
+
+- Assign a fee to a student.
+- Verify that the student sees the assignment without refreshing.
+- Make a partial payment using the supported demo gateway.
+- Verify the payment status and remaining balance.
+- Confirm that the organizer's ledger and student dashboard agree.
+- Generate and download the receipt.
+- Verify that one click produces one download.
+
+## Test 5: Payment Status Consistency
+
+- Record a successful payment.
+- Confirm that the payment is marked as paid or partially paid according to the remaining balance.
+- Confirm that the installment balance updates.
+- Confirm that the official receipt is generated.
+- Verify that failed, pending, and cancelled transactions are handled correctly.
+- Confirm that repeated submissions cannot create duplicate payments.
+
+## Test 6: Faculty Mentoring
+
+- Request a mentoring session as a student.
+- Verify that the mentor sees the request without refreshing.
+- Approve or reschedule the request.
+- Verify that the student receives the update.
+- Publish a shared session summary.
+- Confirm that the student can view the summary.
+
+## Test 7: Leave Application
+
+- Submit a leave application.
+- Verify that the assigned mentor sees it automatically.
+- Test the mentor approval stage.
+- Test HOD approval for leave exceeding three days.
+- Test HOD approval for examination overlap.
+- Confirm that the student sees the updated approval status.
+
+## Test 8: Academic Doubts and Helpdesk
+
+- Submit a new ticket.
+- Open the ticket from the student dashboard.
+- Verify that the complete details are displayed.
+- Add a reply from the authorized faculty or support account.
+- Confirm that the reply appears automatically.
+- Update the status and verify that both dashboards remain synchronized.
+
+## Test 9: Cross-Browser Synchronization
+
+Use separate browser sessions:
+
+- Browser A: Organizer account.
+- Browser B: Student account.
+- Browser C: Faculty account, where applicable.
+
+Perform changes in one session and verify that authorized affected sessions receive updates without manual refresh.
+
+Repeat with multiple institutions to verify account and institution isolation.
+
+## Test 10: Regression Testing
+
+Verify that existing features continue to work:
+
+- Authentication.
+- Student registration.
+- Organizer registration.
+- Role-specific dashboards.
+- Student approvals.
+- Profile editing.
+- Timetable creation.
+- Fee assignments.
+- Payment history.
+- Receipt downloads.
+- Faculty mentoring.
+- Leave approvals.
+- Academic helpdesk.
+
+---
+
+# 14. IMPLEMENTATION RULES
+
+Follow these rules throughout the implementation.
+
+1. Inspect the existing project structure before making changes.
+2. Identify the current frontend framework, backend framework, database, authentication system, and real-time infrastructure.
+3. Reuse existing components and services where appropriate.
+4. Fix root causes instead of applying superficial workarounds.
+5. Do not replace working features unnecessarily.
+6. Do not remove existing records.
+7. Do not hardcode student identities, organizer identities, college codes, faculty members, fee values, or approval statuses.
+8. Do not use local storage as the sole source of truth for shared institutional data.
+9. Do not rely on frontend-only authorization.
+10. Do not create duplicate API requests or database records.
+11. Do not use full-page refreshes as the primary synchronization mechanism.
+12. Do not display success messages before the server confirms successful persistence.
+13. Do not falsely report payments or emails as verified or delivered.
+14. Preserve the application's existing technology stack unless a change is necessary and justified.
+15. Make the interface responsive and accessible.
+16. Ensure all actions have proper loading, success, and error states.
+17. Test the application after implementation.
+18. Fix any regressions introduced by the changes.
+
+---
+
+# 15. FINAL DELIVERABLE
+
+Implement the complete set of improvements directly in the existing application.
+
+Prioritize the work in this order:
+
+**Priority 1 — Critical Functionality**
+- Real-time student approval requests.
+- Real-time timetable updates.
+- Payment status and fee balance consistency.
+- Duplicate timetable and payment prevention.
+- Correct account and institution isolation.
+
+**Priority 2 — Core Academic Workflows**
+- Faculty mentoring.
+- Leave applications and approval chains.
+- Clickable academic doubts and complete helpdesk ticket details.
+
+**Priority 3 — Interface Redesign**
+- Student profile.
+- Academic timetable.
+- Student fee ledger.
+- Official receipts.
+- Loading, empty, success, and error states.
+
+**Priority 4 — Validation and Reliability**
+- Cross-browser testing.
+- Authorization testing.
+- Duplicate-submission testing.
+- PDF download testing.
+- Regression testing.
+
+### Definition of Done
+
+The project is complete only when:
+
+- The student panel no longer contains college-code switching.
+- The profile is clean, accurate, editable where appropriate, and persistent.
+- The timetable is visually polished, chronologically ordered, and free from duplicate records.
+- Fee calculations, payments, balances, and receipts are consistent.
+- Faculty mentoring works end to end.
+- Leave applications follow the configured approval workflow.
+- Academic doubts open into complete, functional detail views.
+- Changes synchronize automatically across authorized student, organizer, and faculty sessions.
+- No manual page refresh is required for ordinary updates.
+- Existing authentication, account isolation, and institutional permissions remain intact.
+- The application builds successfully and the affected workflows pass testing.
+
+**Final instruction:** Do not merely provide suggestions, mockups, or a list of proposed fixes. Inspect the actual implementation, make the necessary code and database changes, test the affected workflows, and report what was changed, what was tested, and any remaining limitations.
