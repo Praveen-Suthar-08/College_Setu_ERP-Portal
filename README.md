@@ -325,7 +325,7 @@ Follow these simple steps to clone, configure, and launch College Setu on your l
 
 ### 1. Clone the Repository
 ```bash
-git clone [https://github.com/Praveen-Suthar-08/College_Setu.git](https://github.com/Praveen-Suthar-08/College_Setu_ERP-Portal.git)
+git clone https://github.com/Praveen-Suthar-08/College_Setu_ERP-Portal.git
 cd College_Setu
 ```
 
